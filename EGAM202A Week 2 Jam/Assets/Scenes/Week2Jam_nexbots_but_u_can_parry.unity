@@ -289,7 +289,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 160777618}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.13282155, y: -0.000000030447357, z: -0.0000000040802157, w: 0.99114}
+  m_LocalRotation: {x: -0.13282159, y: -0.000000029538278, z: -0.0000000039583923, w: 0.99114}
   m_LocalPosition: {x: 0, y: -1.4962788, z: -5.38}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -626,11 +626,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb804c521b6d5a34a934436881788cd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 10
-  groundDrag: 4
+  moveSpeed: 13
+  rotationSpeed: 0
+  groundDrag: 3
   jumpForce: 12
   jumpCooldown: 0.25
-  airMultiplier: 2
+  airMultiplier: 1
   jumpKey: 32
   playerHeight: 2
   whatIsGround:
@@ -1248,7 +1249,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1087220981
 Transform:
   m_ObjectHideFlags: 0
@@ -1258,7 +1259,7 @@ Transform:
   m_GameObject: {fileID: 1087220977}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -1.2657989, y: -0.49627876, z: -1.2382565}
+  m_LocalPosition: {x: -1.2657989, y: -0.42, z: -1.2382565}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1346,7 +1347,7 @@ MeshCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &1121640469
@@ -2124,7 +2125,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1838426396
 Transform:
   m_ObjectHideFlags: 0
@@ -2281,7 +2282,7 @@ MonoBehaviour:
   m_YAxis:
     Value: 0
     m_SpeedMode: 0
-    m_MaxSpeed: 2
+    m_MaxSpeed: 3.5
     m_AccelTime: 0.2
     m_DecelTime: 0.1
     m_InputAxisName: Mouse Y
@@ -2305,7 +2306,7 @@ MonoBehaviour:
   m_XAxis:
     Value: 0
     m_SpeedMode: 0
-    m_MaxSpeed: 300
+    m_MaxSpeed: 375
     m_AccelTime: 0.1
     m_DecelTime: 0.1
     m_InputAxisName: Mouse X
@@ -2333,9 +2334,9 @@ MonoBehaviour:
   m_BindingMode: 4
   m_SplineCurvature: 0.2
   m_Orbits:
-  - m_Height: 4.46
-    m_Radius: 4.11
-  - m_Height: -0.5
+  - m_Height: 10
+    m_Radius: 7.21
+  - m_Height: 2
     m_Radius: 9.75
   - m_Height: -1
     m_Radius: 5.38
@@ -2378,7 +2379,7 @@ MonoBehaviour:
   player: {fileID: 493434473}
   playerObj: {fileID: 2049837683}
   rb: {fileID: 493434474}
-  rotationSpeed: 7
+  rotationSpeed: 8
   currentStyle: 1
   combatLookAt: {fileID: 814370105}
   quickTurn: {fileID: 0}

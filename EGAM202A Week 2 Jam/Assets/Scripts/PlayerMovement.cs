@@ -9,6 +9,7 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Movement")]
     public float moveSpeed;
+    public float rotationSpeed;
 
     public float groundDrag;
 
@@ -16,6 +17,10 @@ public class PlayerMovement : MonoBehaviour
     public float jumpCooldown;
     public float airMultiplier;
     bool readyToJump;
+
+    float horizontalInput;
+    float verticalInput;
+    Quaternion cameraRot;
 
     [Header("Keybinds")]
     public KeyCode jumpKey = KeyCode.Space;
@@ -27,18 +32,8 @@ public class PlayerMovement : MonoBehaviour
 
     public Transform orientation;
 
-    float horizontalInput;
-    float verticalInput;
-
     private Vector3 moveDirection;
     private Rigidbody rb;
-
-    [Header("sum bullshit idk")]
-    public float sensX;
-    public float sensY;
-
-    float xRotation;
-    float yRotation;
 
     // Start is called before the first frame update
     void Start()
@@ -52,19 +47,12 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // get mouse input
-        float mouseX = Input.GetAxisRaw("Mouse X") * Time.deltaTime * sensX;
-        float mouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * sensY;
-
-        // add x input to y rotation
-        yRotation += mouseX;
-        // subtract y input from x rotation
-        xRotation -= mouseY;
-
         // ground check (raycast from center of player down)
         grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIsGround);
 
+        // records player input
         MyInput();
+        // controls speed
         SpeedControl();
 
         // handle drag
@@ -79,6 +67,7 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
+        // player movement
         MovePlayer();
     }
 
@@ -86,7 +75,8 @@ public class PlayerMovement : MonoBehaviour
     private void MyInput()
     {
         horizontalInput = Input.GetAxisRaw("Horizontal");
-        verticalInput = Input.GetAxisRaw("Vertical");
+        verticalInput = Input.GetAxisRaw("Vertical"); 
+
         // * need to get the input to be relative to the direction the camera is facing
 
         // when to jump
@@ -104,11 +94,9 @@ public class PlayerMovement : MonoBehaviour
     private void MovePlayer()
     {
         // calculate movement direction (makes movement follow camera direction)
-        Quaternion cameraRot = Quaternion.Euler(0, yRotation, 0);
-
-        Vector3 movement = cameraRot * new Vector3(horizontalInput, 0, verticalInput);
-
         moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
+
+        // * Vector3.forward converts quaternion (rotation) into a direction
 
         // actually move the player (while on ground)
         if (grounded)
@@ -120,6 +108,11 @@ public class PlayerMovement : MonoBehaviour
         {
             rb.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
         }
+    }
+
+    private void ShiftLockMovement()
+    {
+
     }
 
     // limits player speed
