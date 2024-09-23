@@ -110,11 +110,6 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private void ShiftLockMovement()
-    {
-
-    }
-
     // limits player speed
     private void SpeedControl()
     {

@@ -18,7 +18,7 @@ public class Billboard : MonoBehaviour
     // have object face camera (called after update)
     private void LateUpdate()
     {
-        transform.forward = Camera.main.transform.forward;
+        transform.LookAt(transform.position, Vector3.up);
     }
 
     private void OnBecameVisible()
