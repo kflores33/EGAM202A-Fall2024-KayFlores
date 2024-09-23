@@ -701,6 +701,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 9
       objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: f4468737404e8e345ae43dcb0286ca66, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 9d04a597b0be690439f786412d1dc8ed, type: 2}
     - target: {fileID: 5990745497356770291, guid: f4468737404e8e345ae43dcb0286ca66, type: 3}
       propertyPath: m_Layer
       value: 9
@@ -1001,6 +1005,7 @@ GameObject:
   - component: {fileID: 493434473}
   - component: {fileID: 493434474}
   - component: {fileID: 493434475}
+  - component: {fileID: 493434476}
   m_Layer: 9
   m_Name: Player
   m_TagString: Player
@@ -1068,16 +1073,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 13
   rotationSpeed: 0
+  acceleration: 0.1
+  deceleration: 0.5
   groundDrag: 3
   jumpForce: 12
   jumpCooldown: 0.25
   airMultiplier: 1
   jumpKey: 32
-  playerHeight: 2
+  playerHeight: 2.5
   whatIsGround:
     serializedVersion: 2
     m_Bits: 1024
   orientation: {fileID: 1770406214}
+--- !u!114 &493434476
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 493434469}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eaf84d24a6fb556489bfc366a0490958, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 1075960942}
+  acceleration: 5
+  deceleration: 5
 --- !u!1 &697563617
 GameObject:
   m_ObjectHideFlags: 0
@@ -1713,6 +1735,11 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 3669831931276533217, guid: f4468737404e8e345ae43dcb0286ca66, type: 3}
+--- !u!95 &1075960942 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: f4468737404e8e345ae43dcb0286ca66, type: 3}
+  m_PrefabInstance: {fileID: 337177110}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1146481959
 GameObject:
   m_ObjectHideFlags: 0
@@ -2007,7 +2034,7 @@ Transform:
   m_GameObject: {fileID: 1321437337}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.3, z: 0}
+  m_LocalPosition: {x: 0, y: 1.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2700,7 +2727,7 @@ MonoBehaviour:
   m_Orbits:
   - m_Height: 10
     m_Radius: 7.21
-  - m_Height: 2
+  - m_Height: 3
     m_Radius: 9.75
   - m_Height: -1
     m_Radius: 5.38
@@ -2741,7 +2768,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   orientation: {fileID: 1770406214}
   player: {fileID: 493434473}
-  playerObj: {fileID: 2049837683}
+  playerObj: {fileID: 1075960939}
   rb: {fileID: 493434474}
   rotationSpeed: 8
   currentStyle: 1

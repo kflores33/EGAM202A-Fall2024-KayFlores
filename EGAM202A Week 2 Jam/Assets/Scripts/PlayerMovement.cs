@@ -11,6 +11,9 @@ public class PlayerMovement : MonoBehaviour
     public float moveSpeed;
     public float rotationSpeed;
 
+    public float acceleration = 0.1f;
+    public float deceleration = 0.5f;
+
     public float groundDrag;
 
     public float jumpForce;
@@ -75,7 +78,7 @@ public class PlayerMovement : MonoBehaviour
     private void MyInput()
     {
         horizontalInput = Input.GetAxisRaw("Horizontal");
-        verticalInput = Input.GetAxisRaw("Vertical"); 
+        verticalInput = Input.GetAxisRaw("Vertical");
 
         // * need to get the input to be relative to the direction the camera is facing
 
@@ -84,8 +87,6 @@ public class PlayerMovement : MonoBehaviour
         {
             readyToJump = false;
 
-            Jump();
-
             // allows for continuous jumping if jump key is held down
             Invoke(nameof(ResetJump), jumpCooldown);
         }
@@ -93,6 +94,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void MovePlayer()
     {
+        
         // calculate movement direction (makes movement follow camera direction)
         moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
 
