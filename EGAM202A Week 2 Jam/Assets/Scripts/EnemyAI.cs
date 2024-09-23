@@ -68,7 +68,7 @@ public class EnemyAI : MonoBehaviour
     }
     private void ChasePlayer()
     {
-        transform.LookAt(player);
+        transform.LookAt(player, Vector3.up);
 
         agent.SetDestination(player.position);
     }

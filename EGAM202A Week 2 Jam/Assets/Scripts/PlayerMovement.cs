@@ -19,7 +19,8 @@ public class PlayerMovement : MonoBehaviour
     public float jumpForce;
     public float jumpCooldown;
     public float airMultiplier;
-    bool readyToJump;
+    public bool readyToJump;
+    public bool canJump;
 
     float horizontalInput;
     float verticalInput;
@@ -31,7 +32,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Ground Check")]
     public float playerHeight;
     public LayerMask whatIsGround;
-    bool grounded;
+    public bool grounded;
 
     public Transform orientation;
 
@@ -86,6 +87,7 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKey(jumpKey) && readyToJump && grounded) 
         {
             readyToJump = false;
+            canJump = false;
 
             // allows for continuous jumping if jump key is held down
             Invoke(nameof(ResetJump), jumpCooldown);
@@ -138,5 +140,6 @@ public class PlayerMovement : MonoBehaviour
     private void ResetJump()
     {
         readyToJump = true;
+        canJump = true;
     }
 }

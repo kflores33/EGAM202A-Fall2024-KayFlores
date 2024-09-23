@@ -13,6 +13,8 @@ public class PlayerAnimationController : MonoBehaviour
     public float acceleration = 0.5f;
     public float deceleration = 0.5f;
 
+    public bool hasJumped;
+
     // increase performance
     int BlendZHash;
     int BlendXHash;
@@ -65,8 +67,14 @@ public class PlayerAnimationController : MonoBehaviour
         bool backPressed = Input.GetKey(KeyCode.S);
         bool leftPressed = Input.GetKey(KeyCode.A);
         bool rightPressed = Input.GetKey(KeyCode.D);
+        bool spacePressed = Input.GetKey(KeyCode.Space);
 
-        changeVelocity(forwardPressed, backPressed, leftPressed, rightPressed);
+        // play jump animation
+        if (spacePressed && GetComponent<PlayerMovement>().canJump == true) { 
+            GetComponent<PlayerMovement>().canJump = false; 
+            animator.SetTrigger("JumpTrigger");
+        }
+        else changeVelocity(forwardPressed, backPressed, leftPressed, rightPressed);
 
         animator.SetFloat(BlendXHash, blendX);
         animator.SetFloat(BlendZHash, blendZ);
