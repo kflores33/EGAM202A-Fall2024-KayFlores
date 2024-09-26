@@ -23,6 +23,7 @@ public class PlayerAnimationController : MonoBehaviour
     void Start()
     {
         animator = GetComponentInChildren<Animator>();
+        animator.SetBool("canJump", true);
 
         // increase performance
         BlendZHash = Animator.StringToHash("DirectionZ");
@@ -63,6 +64,11 @@ public class PlayerAnimationController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (GetComponent<PlayerMovement>().canJump == true)
+        {
+            animator.SetBool("canJump", true);
+        }
+
         bool forwardPressed = Input.GetKey(KeyCode.W);
         bool backPressed = Input.GetKey(KeyCode.S);
         bool leftPressed = Input.GetKey(KeyCode.A);
@@ -70,9 +76,12 @@ public class PlayerAnimationController : MonoBehaviour
         bool spacePressed = Input.GetKey(KeyCode.Space);
 
         // play jump animation
-        if (spacePressed && GetComponent<PlayerMovement>().canJump == true) { 
-            GetComponent<PlayerMovement>().canJump = false; 
+        if (spacePressed && animator.GetBool("canJump") == true) { 
             animator.SetTrigger("JumpTrigger");
+
+            animator.SetBool("canJump", false);
+            
+            GetComponent<PlayerMovement>().canJump = false;
         }
         else changeVelocity(forwardPressed, backPressed, leftPressed, rightPressed);
 

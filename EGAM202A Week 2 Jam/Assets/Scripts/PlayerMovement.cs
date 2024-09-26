@@ -36,7 +36,7 @@ public class PlayerMovement : MonoBehaviour
 
     public Transform orientation;
 
-    private Vector3 moveDirection;
+    public Vector3 moveDirection;
     private Rigidbody rb;
 
     // Start is called before the first frame update
@@ -87,7 +87,6 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKey(jumpKey) && readyToJump && grounded) 
         {
             readyToJump = false;
-            canJump = false;
 
             // allows for continuous jumping if jump key is held down
             Invoke(nameof(ResetJump), jumpCooldown);
