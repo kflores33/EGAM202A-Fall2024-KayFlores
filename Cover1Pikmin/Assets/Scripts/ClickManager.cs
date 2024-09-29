@@ -32,4 +32,6 @@ public class ClickManager : MonoBehaviour
 
         Debug.DrawRay(mouseOriginAndDirection.origin, mouseOriginAndDirection.direction * 100, Color.magenta);
     }
+
+    // update this script to have characters be selectable
 }

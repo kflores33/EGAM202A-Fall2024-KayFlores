@@ -1,22 +1,67 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class MoveableCamera : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    // reference: https://www.reddit.com/r/Unity3D/comments/7i057l/how_to_check_if_mouse_position_is_within_a/
+    // https://discussions.unity.com/t/detect-cursor-on-edge-of-screen/70650
+
+    public Camera gameCamera;
+
+    public Transform cameraTransform;
+
+    public float moveSpeed;
+
+    public Rigidbody rb;
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        
+        Vector2 mousePosition = Input.mousePosition;
+        Ray mouseOriginAndDirection = gameCamera.ScreenPointToRay(mousePosition);
+
+        // transform movement
+        CheckIfNearScreenEdge();
+
+        // add force movement
+        //AddForceCameraMove();
     }
 
-    // get mouse cursor position
+    // move camera with transform
+    void CheckIfNearScreenEdge()
+    {
+        // up
+        if (Input.mousePosition.y >= Screen.height * 0.9f )
+        {
+            cameraTransform.transform.Translate(Vector3.up.normalized * Time.deltaTime * moveSpeed, Space.World);
+        }
+        // right
+        if (Input.mousePosition.x >= Screen.width * 0.9f)
+        {
+            cameraTransform.transform.Translate(Vector3.right.normalized * Time.deltaTime * moveSpeed, Space.World);
+        }
+        // down
+        if (Input.mousePosition.y <= Screen.height * 0.1f)
+        {
+            cameraTransform.transform.Translate(Vector3.down.normalized * Time.deltaTime * moveSpeed, Space.World);
+        }
+        // left
+        if (Input.mousePosition.x <= Screen.width * 0.1f)
+        {
+            cameraTransform.transform.Translate(Vector3.left.normalized * Time.deltaTime * moveSpeed, Space.World);
+        }
+
+    }
+
+    // move camera with add force
+    void AddForceCameraMove()
+    {
+        Vector3 moveDirection = Input.mousePosition;
+        rb.AddForce( moveDirection.normalized * Time.deltaTime * moveSpeed, ForceMode.Force);
+    }
 
     // if cursor raycast comes in contact with the edge sections of the screen, move the camera towards that direction
     // (change x and z, not y)
@@ -26,4 +71,6 @@ public class MoveableCamera : MonoBehaviour
 
     // to create the boundary, i could prolly put actual gameobjects the cursor can collide with and have them parented to the camera (and have
     // them be invisible ofc
+
+    // actually wait jk. just see if the cursor is at a position _ distance away from the border and move the camera towards it if so.
 }
