@@ -4,15 +4,16 @@ using UnityEngine;
 
 public class ElectricAttribute : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public GameObject gameManager;
 
-    // Update is called once per frame
-    void Update()
+    private void OnCollisionEnter(Collision collision)
     {
-        
+        if (collision.gameObject.GetComponent<MoveCharacter>() == null)
+        {
+            if (collision.gameObject.GetComponent<FireAttribute>() || collision.gameObject.GetComponent<WaterAttribute>())
+            {
+                gameManager.GetComponent<RestartScene>().restartGame();
+            }
+        }
     }
 }

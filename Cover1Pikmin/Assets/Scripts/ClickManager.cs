@@ -13,6 +13,11 @@ public class ClickManager : MonoBehaviour
 
     private MoveCharacter activePikmin = null;
 
+    //private void Start()
+    //{
+    //    gameCamera = Camera.main;
+    //}
+
     // regular update is ok for this cause movement uses transform instead of add force/physics
     void Update()
     {

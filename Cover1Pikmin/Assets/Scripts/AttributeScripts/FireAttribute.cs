@@ -4,15 +4,17 @@ using UnityEngine;
 
 public class FireAttribute : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public GameObject gameManager;
+    public bool isPlayerObject;
 
-    // Update is called once per frame
-    void Update()
+    private void OnCollisionEnter(Collision collision)
     {
-        
+        if (collision.gameObject.GetComponent<MoveCharacter>() == null)
+        {
+            if (collision.gameObject.GetComponent<ElectricAttribute>() || collision.gameObject.GetComponent<WaterAttribute>())
+            {
+                gameManager.GetComponent<RestartScene>().restartGame();
+            }
+        }
     }
 }
