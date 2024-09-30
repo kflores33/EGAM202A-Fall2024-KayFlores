@@ -36,24 +36,27 @@ public class MoveableCamera : MonoBehaviour
         // up
         if (Input.mousePosition.y >= Screen.height * 0.9f )
         {
-            cameraTransform.transform.Translate(Vector3.up.normalized * Time.deltaTime * moveSpeed, Space.World);
+            //cameraTransform.transform.Translate(Vector3.up.normalized * Time.deltaTime * moveSpeed, Space.World);
+            cameraTransform.localPosition += Vector3.up * moveSpeed * Time.deltaTime;
         }
         // right
         if (Input.mousePosition.x >= Screen.width * 0.9f)
         {
-            cameraTransform.transform.Translate(Vector3.right.normalized * Time.deltaTime * moveSpeed, Space.World);
+            //cameraTransform.transform.Translate(Vector3.right.normalized * Time.deltaTime * moveSpeed, Space.World);
+            cameraTransform.localPosition += Vector3.right * moveSpeed * Time.deltaTime;
         }
         // down
         if (Input.mousePosition.y <= Screen.height * 0.1f)
         {
-            cameraTransform.transform.Translate(Vector3.down.normalized * Time.deltaTime * moveSpeed, Space.World);
+            //cameraTransform.transform.Translate(Vector3.down.normalized * Time.deltaTime * moveSpeed, Space.World);
+            cameraTransform.localPosition += Vector3.down * moveSpeed * Time.deltaTime;
         }
         // left
         if (Input.mousePosition.x <= Screen.width * 0.1f)
         {
-            cameraTransform.transform.Translate(Vector3.left.normalized * Time.deltaTime * moveSpeed, Space.World);
+            //cameraTransform.transform.Translate(Vector3.left.normalized * Time.deltaTime * moveSpeed, Space.World);
+            cameraTransform.localPosition += Vector3.left * moveSpeed * Time.deltaTime;
         }
-
     }
 
     // move camera with add force

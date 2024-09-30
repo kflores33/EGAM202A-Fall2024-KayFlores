@@ -8,7 +8,7 @@ public class RestartScene : MonoBehaviour
     // Start is called before the first frame update
     void restartGame()
     {
-        SceneManager.LoadScene("Week2Jam_nexbots_but_u_can_parry");
+        SceneManager.LoadScene("Pikmin");
     }
 
     // Update is called once per frame
