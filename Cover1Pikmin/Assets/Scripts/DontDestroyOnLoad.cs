@@ -7,6 +7,7 @@ public class DontDestroyOnLoad : MonoBehaviour
     // references this forum post : https://discussions.unity.com/t/keep-audio-playing-even-though-i-reset-the-scene/115650/4
 
     public GameObject[] timer;
+    public GameObject[] cameraMain;
 
     void Start()
     {
@@ -14,6 +15,11 @@ public class DontDestroyOnLoad : MonoBehaviour
         if (timer.Length > 1)
         {
             Destroy(timer[1]);
+        }
+        cameraMain = GameObject.FindGameObjectsWithTag("MainCamera");
+        if (cameraMain.Length > 1)
+        {
+            Destroy(cameraMain[1]);
         }
     }
 
