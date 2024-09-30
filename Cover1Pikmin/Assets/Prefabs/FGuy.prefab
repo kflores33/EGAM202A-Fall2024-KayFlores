@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 5406634386885438524}
   - component: {fileID: 2246228139916598333}
   - component: {fileID: 1621107260507458697}
+  - component: {fileID: 5060098032761617759}
   m_Layer: 0
   m_Name: FGuy
   m_TagString: Untagged
@@ -182,3 +183,40 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!114 &5060098032761617759
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8266468192659117233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f31114d647fffba4ab9eb01f0ac2c2c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Method: 3
+  m_Curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 3.7485538
+      outSlope: 3.7485538
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.03967484
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: -0.37090206
+      outSlope: -0.37090206
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.10394806
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
