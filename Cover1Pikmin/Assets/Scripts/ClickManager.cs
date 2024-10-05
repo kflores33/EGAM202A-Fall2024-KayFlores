@@ -11,7 +11,8 @@ public class ClickManager : MonoBehaviour
 
     public GameObject selectIndicator;
 
-    private MoveCharacter activePikmin = null;
+    public MoveCharacter activePikmin = null;
+    public TreasureScript activeTreasure = null;
 
     // regular update is ok for this cause movement uses transform instead of add force/physics
     void Update()
@@ -40,22 +41,48 @@ public class ClickManager : MonoBehaviour
                     activePikmin = pikmin;
                 }
                 // if pikmin is already selected, set target position
-                else if (activePikmin != null) 
+                else if (activePikmin != null)
                 {
                     // (this designates the position where the mouse button was clicked as the target)
                     activePikmin.SetPikminTarget(hitInfo.point);
                 }
+
+                TreasureScript treasure = hitInfo.transform.GetComponent<TreasureScript>();
+                if (treasure != null)
+                {
+                    if (activeTreasure != null)
+                    {
+                        activeTreasure.SetTreasureActive(false);
+
+                        activeTreasure = null;
+                    }
+                    treasure.SetTreasureActive(true);
+                    activeTreasure = treasure;
+                }
+                else if (activeTreasure != null && activeTreasure.GetComponent<TreasureScript>().numberOfPikminRequired == activeTreasure.GetComponent<TreasureScript>().numberOfPikminCurrent)
+                {
+                    activeTreasure.SetTreasureTarget(hitInfo.point);
+                }
+
+                Debug.DrawRay(mouseRay.origin, mouseRay.direction * 100, Color.magenta);
             }
-
-            Debug.DrawRay(mouseRay.origin, mouseRay.direction * 100, Color.magenta);
-        }
-        // deselect pikmin with right click
-        if (Input.GetMouseButtonDown(1)) { 
-            if (activePikmin != null)
+            // deselect pikmin/treasure with right click
+            if (Input.GetMouseButtonDown(1))
             {
-                activePikmin.SetPikminActive(false);
+                if (activePikmin != null)
+                {
+                    activePikmin.SetPikminActive(false);
 
-                activePikmin = null;
+                    activePikmin = null;
+                }
+
+                if (activeTreasure != null)
+                {
+                    activeTreasure.DismissPikmin();
+                    activeTreasure.SetTreasureActive(false);
+
+                    activeTreasure = null;
+                }
             }
         }
     }
