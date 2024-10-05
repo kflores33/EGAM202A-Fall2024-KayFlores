@@ -50,10 +50,11 @@ public class TreasureScript : MonoBehaviour
                     Debug.Log("set pikmin as child");
 
                     pikmin.transform.SetParent(t);
-                    pikmin.GetComponent<NavMeshAgent>().enabled = false;
 
                     if (pikmin = clickManager.GetComponent<ClickManager>().activePikmin)
                     {
+                        pikmin.GetComponent<NavMeshAgent>().enabled = false;
+
                         clickManager.GetComponent<ClickManager>().activePikmin.SetPikminActive(false);
 
                         clickManager.GetComponent<ClickManager>().activePikmin = null;
@@ -82,6 +83,8 @@ public class TreasureScript : MonoBehaviour
         // sets the target position to the targetIndicator's transform
         agent.SetDestination(position);
     }
+
+    // doesnt work
     public void DismissPikmin()
     {
         foreach (Transform t in PossiblePositions)
