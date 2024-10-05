@@ -21,6 +21,8 @@ public class TreasureScript : MonoBehaviour
 
     void FixedUpdate()
     {
+        SetPositionOfChild();
+
         Vector3 ourPosition = transform.position;
         Vector3 targetPosition = targetIndicator.position;
 
@@ -38,22 +40,19 @@ public class TreasureScript : MonoBehaviour
         MoveCharacter pikmin = col.gameObject.GetComponent<MoveCharacter>();
         if (pikmin != null) 
         {
-            // check each position to see if it has a child (pikmin)
+            // checks each position to see if it has a child (pikmin)
             // if yes, check next position in the list
-            // if no, make the pikmin a child of that position
-            // ++numberOfPikminCurrent
-
             foreach (Transform t in PossiblePositions)
             {
-                // works until if statement
-
+                // if no, make the pikmin a child of that position and break the loop
                 if (t.transform.childCount == 0)
                 {
                     Debug.Log("set pikmin as child");
 
                     pikmin.transform.SetParent(t);
+                    pikmin.GetComponent<NavMeshAgent>().enabled = false;
 
-                    if (clickManager.GetComponent<ClickManager>().activePikmin != null)
+                    if (pikmin = clickManager.GetComponent<ClickManager>().activePikmin)
                     {
                         clickManager.GetComponent<ClickManager>().activePikmin.SetPikminActive(false);
 
@@ -93,10 +92,23 @@ public class TreasureScript : MonoBehaviour
             if (t.transform.childCount > 0)
             {
                 pikmin.transform.SetParent(null);
+                pikmin.GetComponent<NavMeshAgent>().enabled = true;
             }
             break;
         }
 
         numberOfPikminCurrent = 0;
+    }
+    public void SetPositionOfChild()
+    {
+        foreach (Transform t in PossiblePositions)
+        {
+            MoveCharacter pikmin = t.gameObject.GetComponentInChildren<MoveCharacter>();
+            if (t.transform.childCount > 0)
+            {
+                pikmin.transform.localPosition = new Vector3(0, 0, 0);
+            }
+            break;
+        }
     }
 }

@@ -11,6 +11,8 @@ public class MoveCharacter : MonoBehaviour
     public Transform activeIndicator;
     public Transform targetIndicator;
 
+    public Rigidbody rb;
+
     public float moveSpeed;
 
     [Header("Line Renderer Variables")]
