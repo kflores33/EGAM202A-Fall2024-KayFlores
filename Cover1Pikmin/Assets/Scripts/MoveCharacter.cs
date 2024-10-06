@@ -11,6 +11,8 @@ public class MoveCharacter : MonoBehaviour
     public Transform activeIndicator;
     public Transform targetIndicator;
 
+    public GameObject clickManager;
+
     public Rigidbody rb;
 
     public float moveSpeed;
@@ -19,6 +21,34 @@ public class MoveCharacter : MonoBehaviour
     public LineRenderer lineRenderer;
     public Color startColor;
     public Color endColor;
+
+    public enum PikminStates
+    {
+        Idle,
+        Selected,
+        Carrying,
+        TryingToCarry
+    }
+
+    public PikminStates currentState;
+    void Start()
+    {
+        currentState = PikminStates.Idle;
+    }
+    void Update()
+    {
+        switch (currentState) 
+        { 
+            case PikminStates.Idle:
+                UpdateIdle() ; break;
+            case PikminStates.Selected:
+                UpdateSelected() ; break;
+            case PikminStates.Carrying:
+                UpdateCarrying(); break;
+            case PikminStates.TryingToCarry:
+                UpdateTryingToCarry(); break;
+        }
+    }
 
     public void SetPikminActive(bool isActive)
     {
@@ -51,5 +81,37 @@ public class MoveCharacter : MonoBehaviour
         {
             targetIndicator.gameObject.SetActive(false);
         }
+    }
+
+    void UpdateIdle()
+    {
+        SetPikminActive(false);
+    }
+    void UpdateSelected()
+    {
+        SetPikminActive(true);
+        agent.enabled = true;
+
+        if (Input.GetMouseButtonDown(1))
+        {
+            if (clickManager.GetComponent<ClickManager>().activePikmin != null)
+            {
+                clickManager.GetComponent<ClickManager>().activePikmin.currentState = MoveCharacter.PikminStates.Idle;
+
+                clickManager.GetComponent<ClickManager>().activePikmin = null;
+            }
+        }
+    }
+    void UpdateCarrying()
+    {
+        SetPikminActive(false);
+        clickManager.GetComponent<ClickManager>().activePikmin = null;
+        agent.enabled = false;
+    }
+    void UpdateTryingToCarry()
+    {
+        SetPikminActive(false);
+        clickManager.GetComponent<ClickManager>().activePikmin = null;
+        agent.enabled = false;
     }
 }

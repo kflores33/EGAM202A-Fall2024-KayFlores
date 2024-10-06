@@ -372,6 +372,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5398089567372653897, guid: d0b5bef81c42cd847a682514b2ec5c45, type: 3}
+      propertyPath: clickManager
+      value: 
+      objectReference: {fileID: 1309906775}
+    - target: {fileID: 5398089567372653897, guid: d0b5bef81c42cd847a682514b2ec5c45, type: 3}
       propertyPath: targetIndicator
       value: 
       objectReference: {fileID: 993671986}
@@ -444,10 +448,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameManager
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2020652945783118473, guid: 3fbbccfc077d197489ceeba21aa77154, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5600240536910992577, guid: 3fbbccfc077d197489ceeba21aa77154, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1309906779}
   m_SourcePrefab: {fileID: 100100000, guid: 3fbbccfc077d197489ceeba21aa77154, type: 3}
 --- !u!1001 &815781182
 PrefabInstance:
@@ -611,6 +619,7 @@ MonoBehaviour:
   clickManager: {fileID: 1309906775}
   numberOfPikminRequired: 2
   numberOfPikminCurrent: 0
+  currentState: 0
 --- !u!195 &955675401
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -929,6 +938,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9016828608030106096, guid: fe54622c4ef896846b6b6a5bb3b5d269, type: 3}
+      propertyPath: clickManager
+      value: 
+      objectReference: {fileID: 1309906775}
+    - target: {fileID: 9016828608030106096, guid: fe54622c4ef896846b6b6a5bb3b5d269, type: 3}
       propertyPath: targetIndicator
       value: 
       objectReference: {fileID: 993671986}
@@ -942,6 +955,18 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 5600240536910992577, guid: 3fbbccfc077d197489ceeba21aa77154, type: 3}
   m_PrefabInstance: {fileID: 790209847}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1309906779
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1309906775}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bc97a27ebf0fed47a0ab66569fc5dec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1558004123
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -990,6 +1015,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2246228139916598333, guid: a382724b17ac46d43b5ef02a6b451bbe, type: 3}
+      propertyPath: clickManager
+      value: 
+      objectReference: {fileID: 1309906775}
     - target: {fileID: 2246228139916598333, guid: a382724b17ac46d43b5ef02a6b451bbe, type: 3}
       propertyPath: targetIndicator
       value: 

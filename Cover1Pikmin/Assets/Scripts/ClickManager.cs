@@ -33,24 +33,29 @@ public class ClickManager : MonoBehaviour
                     // if another pikmin is selected while one is active, deselect current pikmin and select new
                     if (activePikmin != null )
                     {
-                        activePikmin.SetPikminActive(false);
+                        activePikmin.currentState = MoveCharacter.PikminStates.Idle;
 
                         activePikmin = null;
                     }
-                    // deselect treasure if previously deselected
+                    // deselect treasure if previously selected
                     if(activeTreasure != null)
                     {
-                        activeTreasure.SetTreasureActive(false);
+                        activeTreasure.currentState = TreasureScript.TreasureStates.Idle;
 
                         activeTreasure = null;
                     }
 
-                    pikmin.SetPikminActive(true);
+                    pikmin.currentState = MoveCharacter.PikminStates.Selected;
                     activePikmin = pikmin;
                 }
                 // if pikmin is already selected, set target position
                 else if (activePikmin != null)
                 {
+                    if (activePikmin.currentState != MoveCharacter.PikminStates.Selected)
+                    {
+                        activePikmin.currentState = MoveCharacter.PikminStates.Selected;
+                    }
+
                     // (this designates the position where the mouse button was clicked as the target)
                     activePikmin.SetPikminTarget(hitInfo.point);
                 }
@@ -61,19 +66,19 @@ public class ClickManager : MonoBehaviour
                     // if another treasure is selected, deactivate current and activate new
                     if (activeTreasure != null)
                     {
-                        activeTreasure.SetTreasureActive(false);
+                        activeTreasure.currentState = TreasureScript.TreasureStates.Idle;
 
                         activeTreasure = null;
                     }
                     // deselect pikmin if previously selected
                     //if (activePikmin != null)
                     //{
-                    //    activePikmin.SetPikminActive(false);
+                    //    activePikmin.currentState = MoveCharacter.PikminStates.TryingToCarry;
 
                     //    activePikmin = null;
                     //}
 
-                    treasure.SetTreasureActive(true);
+                    treasure.currentState = TreasureScript.TreasureStates.Selected;
                     activeTreasure = treasure;
                 }
                 else if (activeTreasure != null && activeTreasure.GetComponent<TreasureScript>().numberOfPikminRequired == activeTreasure.GetComponent<TreasureScript>().numberOfPikminCurrent)
@@ -82,24 +87,6 @@ public class ClickManager : MonoBehaviour
                 }
 
                 Debug.DrawRay(mouseRay.origin, mouseRay.direction * 100, Color.magenta);
-            }
-            // deselect pikmin/treasure with right click
-            if (Input.GetMouseButtonDown(1))
-            {
-                if (activePikmin != null)
-                {
-                    activePikmin.SetPikminActive(false);
-
-                    activePikmin = null;
-                }
-
-                if (activeTreasure != null && activeTreasure.GetComponent<TreasureScript>().numberOfPikminRequired == activeTreasure.GetComponent<TreasureScript>().numberOfPikminCurrent)
-                {
-                    activeTreasure.DismissPikmin();
-                    activeTreasure.SetTreasureActive(false);
-
-                    activeTreasure = null;
-                }
             }
         }
     }
