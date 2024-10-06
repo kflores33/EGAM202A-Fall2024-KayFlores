@@ -21,7 +21,10 @@ public class TreasureScript : MonoBehaviour
 
     void FixedUpdate()
     {
-        SetPositionOfChild();
+        if (numberOfPikminCurrent == numberOfPikminRequired)
+        {
+            SetPositionOfChild();
+        }
 
         Vector3 ourPosition = transform.position;
         Vector3 targetPosition = targetIndicator.position;
@@ -51,6 +54,7 @@ public class TreasureScript : MonoBehaviour
 
                     pikmin.transform.SetParent(t);
 
+                    // disable navmeshagent of attatched pikmin (keeps things from moving all wacky)
                     if (pikmin = clickManager.GetComponent<ClickManager>().activePikmin)
                     {
                         pikmin.GetComponent<NavMeshAgent>().enabled = false;
@@ -87,9 +91,10 @@ public class TreasureScript : MonoBehaviour
     // doesnt work
     public void DismissPikmin()
     {
+        Debug.Log("pikmin dismissed");
         foreach (Transform t in PossiblePositions)
         {
-            Debug.Log("pikmin dismissed");
+            
 
             MoveCharacter pikmin = t.gameObject.GetComponentInChildren<MoveCharacter>();
             if (t.transform.childCount > 0)

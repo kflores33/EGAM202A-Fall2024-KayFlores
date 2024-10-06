@@ -30,11 +30,19 @@ public class ClickManager : MonoBehaviour
                 MoveCharacter pikmin = hitInfo.transform.GetComponent<MoveCharacter>();
                 if (pikmin != null)
                 {
-                    if (activePikmin != null)
+                    // if another pikmin is selected while one is active, deselect current pikmin and select new
+                    if (activePikmin != null )
                     {
                         activePikmin.SetPikminActive(false);
 
                         activePikmin = null;
+                    }
+                    // deselect treasure if previously deselected
+                    if(activeTreasure != null)
+                    {
+                        activeTreasure.SetTreasureActive(false);
+
+                        activeTreasure = null;
                     }
 
                     pikmin.SetPikminActive(true);
@@ -50,12 +58,21 @@ public class ClickManager : MonoBehaviour
                 TreasureScript treasure = hitInfo.transform.GetComponent<TreasureScript>();
                 if (treasure != null)
                 {
+                    // if another treasure is selected, deactivate current and activate new
                     if (activeTreasure != null)
                     {
                         activeTreasure.SetTreasureActive(false);
 
                         activeTreasure = null;
                     }
+                    // deselect pikmin if previously selected
+                    //if (activePikmin != null)
+                    //{
+                    //    activePikmin.SetPikminActive(false);
+
+                    //    activePikmin = null;
+                    //}
+
                     treasure.SetTreasureActive(true);
                     activeTreasure = treasure;
                 }
@@ -76,7 +93,7 @@ public class ClickManager : MonoBehaviour
                     activePikmin = null;
                 }
 
-                if (activeTreasure != null)
+                if (activeTreasure != null && activeTreasure.GetComponent<TreasureScript>().numberOfPikminRequired == activeTreasure.GetComponent<TreasureScript>().numberOfPikminCurrent)
                 {
                     activeTreasure.DismissPikmin();
                     activeTreasure.SetTreasureActive(false);
