@@ -27,41 +27,39 @@ public class ClickManager : MonoBehaviour
             if (Physics.Raycast(mouseRay, out RaycastHit hitInfo, 100))
             {
                 // check if obj has the pikmin script
+                TreasureScript treasure = hitInfo.transform.GetComponent<TreasureScript>();
                 MoveCharacter pikmin = hitInfo.transform.GetComponent<MoveCharacter>();
-                if (pikmin != null)
+
+                // if a pikmin is selected
+                if (pikmin != null && pikmin.currentState != MoveCharacter.PikminStates.TryingToCarry && activeTreasure == null)
                 {
                     // if another pikmin is selected while one is active, deselect current pikmin and select new
-                    if (activePikmin != null )
+                    if (activePikmin != null)
                     {
                         activePikmin.currentState = MoveCharacter.PikminStates.Idle;
 
                         activePikmin = null;
                     }
-                    // deselect treasure if previously selected
-                    if(activeTreasure != null)
-                    {
-                        activeTreasure.currentState = TreasureScript.TreasureStates.Idle;
 
-                        activeTreasure = null;
-                    }
-
+                    // set this selected pikmin as the active one
                     pikmin.currentState = MoveCharacter.PikminStates.Selected;
                     activePikmin = pikmin;
                 }
-                // if pikmin is already selected, set target position
-                else if (activePikmin != null)
-                {
-                    if (activePikmin.currentState != MoveCharacter.PikminStates.Selected)
-                    {
-                        activePikmin.currentState = MoveCharacter.PikminStates.Selected;
-                    }
 
+                // if there is a pikmin active and something other than the pikmin is selected, set target position
+                else if (activePikmin != null && treasure == null)
+                {
                     // (this designates the position where the mouse button was clicked as the target)
                     activePikmin.SetPikminTarget(hitInfo.point);
                 }
 
-                TreasureScript treasure = hitInfo.transform.GetComponent<TreasureScript>();
-                if (treasure != null)
+                else if (activePikmin != null && treasure != null)
+                {
+                    activePikmin.SetPikminTarget(treasure.gameObject.transform.position);
+                }
+
+                // select previously unselected treasure
+                else if (treasure != null && activePikmin == null)
                 {
                     // if another treasure is selected, deactivate current and activate new
                     if (activeTreasure != null)
@@ -70,20 +68,29 @@ public class ClickManager : MonoBehaviour
 
                         activeTreasure = null;
                     }
-                    // deselect pikmin if previously selected
-                    //if (activePikmin != null)
-                    //{
-                    //    activePikmin.currentState = MoveCharacter.PikminStates.TryingToCarry;
+                    // set this treasure as active treasure
+                    if (treasure.numberOfPikminCurrent != treasure.numberOfPikminRequired)
+                    {
+                        treasure.currentState = TreasureScript.TreasureStates.TryingToCarry;
 
-                    //    activePikmin = null;
-                    //}
-
-                    treasure.currentState = TreasureScript.TreasureStates.Selected;
+                    }
+                    else if (treasure.numberOfPikminCurrent == treasure.numberOfPikminRequired)
+                    {
+                        treasure.currentState = TreasureScript.TreasureStates.BeingCarried;
+                    }
                     activeTreasure = treasure;
                 }
-                else if (activeTreasure != null && activeTreasure.GetComponent<TreasureScript>().numberOfPikminRequired == activeTreasure.GetComponent<TreasureScript>().numberOfPikminCurrent)
+
+                // if treasure is active and some random shit is selected move the treasure
+                else if (activeTreasure != null && activeTreasure.currentState == TreasureScript.TreasureStates.BeingCarried && pikmin == null)
                 {
                     activeTreasure.SetTreasureTarget(hitInfo.point);
+                }
+
+                // deselect if not enough pikmin
+                else if (activeTreasure != null && activeTreasure.currentState == TreasureScript.TreasureStates.TryingToCarry && pikmin == null)
+                {
+                    activeTreasure = null;
                 }
 
                 Debug.DrawRay(mouseRay.origin, mouseRay.direction * 100, Color.magenta);

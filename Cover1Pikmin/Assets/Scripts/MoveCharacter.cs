@@ -11,6 +11,9 @@ public class MoveCharacter : MonoBehaviour
     public Transform activeIndicator;
     public Transform targetIndicator;
 
+    public GameObject carryIndicator;
+    public GameObject tryingToCarryIndicator;
+
     public GameObject clickManager;
 
     public Rigidbody rb;
@@ -86,10 +89,15 @@ public class MoveCharacter : MonoBehaviour
     void UpdateIdle()
     {
         SetPikminActive(false);
+        tryingToCarryIndicator.SetActive(false);
+        carryIndicator.SetActive(false);
     }
     void UpdateSelected()
     {
         SetPikminActive(true);
+        tryingToCarryIndicator.SetActive(false);
+        carryIndicator.SetActive(false);
+
         agent.enabled = true;
 
         if (Input.GetMouseButtonDown(1))
@@ -104,14 +112,21 @@ public class MoveCharacter : MonoBehaviour
     }
     void UpdateCarrying()
     {
-        SetPikminActive(false);
+        tryingToCarryIndicator.SetActive(false);
+
+        SetPikminActive(true);
+        carryIndicator.SetActive(true );
         clickManager.GetComponent<ClickManager>().activePikmin = null;
+
         agent.enabled = false;
+
     }
     void UpdateTryingToCarry()
     {
+        carryIndicator.SetActive(false);
+
+        tryingToCarryIndicator.SetActive(true );
+        agent.enabled = true;
         SetPikminActive(false);
-        clickManager.GetComponent<ClickManager>().activePikmin = null;
-        agent.enabled = false;
     }
 }

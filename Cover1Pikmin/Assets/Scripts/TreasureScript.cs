@@ -22,7 +22,6 @@ public class TreasureScript : MonoBehaviour
     public enum TreasureStates
     {
         Idle,
-        Selected,
         BeingCarried,
         TryingToCarry
     }
@@ -39,8 +38,6 @@ public class TreasureScript : MonoBehaviour
         switch (currentState) {
             case TreasureStates.Idle:
                 UpdateIdle();break;
-            case TreasureStates.Selected:
-                UpdateSelected(); break;
             case TreasureStates.BeingCarried:
                 UpdateBeingCarried(); break;
              case TreasureStates.TryingToCarry:
@@ -81,8 +78,12 @@ public class TreasureScript : MonoBehaviour
                 {
                     Debug.Log("set pikmin as child");
 
-                    pikmin.transform.SetParent(t);
                     pikmin.currentState = MoveCharacter.PikminStates.TryingToCarry;
+                    pikmin.transform.SetParent(t);
+
+                    clickManager.GetComponent<ClickManager>().activePikmin = null;
+
+                    currentState = TreasureStates.TryingToCarry;
 
                     ++numberOfPikminCurrent;
                     break;
@@ -146,23 +147,15 @@ public class TreasureScript : MonoBehaviour
 
     void UpdateIdle()
     {
-        SetTreasureActive(false);
-    }
-    void UpdateSelected()
-    {
-        SetTreasureActive(true);
-
-        if (Input.GetMouseButtonDown(1))
-        {
-            DismissPikmin();
-            clickManager.GetComponent<ClickManager>().activeTreasure = null;
-            currentState = TreasureStates.Idle;
-        }
+        SetTreasureActive(false); 
+        agent.enabled = false;
     }
     void UpdateBeingCarried()
     {
         SetTreasureActive(true);
+        agent.enabled = true;
 
+        // move children with treasure
         SetPositionOfChild();
 
         if (Input.GetMouseButtonDown(1))
@@ -175,6 +168,7 @@ public class TreasureScript : MonoBehaviour
     void UpdateTryingToCarry()
     {
         SetTreasureActive(false);
+        agent.enabled = false;
 
         if (Input.GetMouseButtonDown(1))
         {
