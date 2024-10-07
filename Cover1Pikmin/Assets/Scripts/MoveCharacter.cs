@@ -126,7 +126,7 @@ public class MoveCharacter : MonoBehaviour
         carryIndicator.SetActive(false);
 
         tryingToCarryIndicator.SetActive(true );
-        agent.enabled = true;
+        agent.enabled = false;
         SetPikminActive(false);
     }
 }
