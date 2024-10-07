@@ -52,6 +52,7 @@ public class ClickManager : MonoBehaviour
                 {
                     activePikmin.SetPikminTarget(hitInfo.point);
 
+                    // this is the problem lol
                     if (treasure != null)
                     {
                         treasureTarget = treasure;
@@ -66,6 +67,8 @@ public class ClickManager : MonoBehaviour
                     
                     // (this designates the position where the mouse button was clicked as the target)
                 }
+
+
                 // if treasure is clicked on and that treasure has enough pikmin carrying it, set it active
                 else if (activeTreasure != null && activeTreasure.currentState == TreasureScript.TreasureStates.BeingCarried )
                 {
