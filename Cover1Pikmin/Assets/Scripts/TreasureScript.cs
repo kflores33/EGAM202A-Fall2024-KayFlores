@@ -92,7 +92,6 @@ public class TreasureScript : MonoBehaviour
             break;
         }
 
-
         currentState = TreasureStates.Idle;
     }
     public void AddToPikminList(MoveCharacter pikmin)

@@ -68,12 +68,12 @@ public class MoveCharacter : MonoBehaviour
         agent.SetDestination(position);
     }
 
-    public void SetPikminTargetTreasure(Vector3 position)
+    public void SetPikminTargetTreasure(Transform transformTreasure)
     {
-        treasurePosition.position = position;
+        treasurePosition = transformTreasure;
 
         // sets the target position to the targetIndicator's transform
-        agent.SetDestination(position);
+        agent.SetDestination(transformTreasure.position);
     }
     public void ForgetTreasureTarget()
     {
@@ -142,7 +142,7 @@ public class MoveCharacter : MonoBehaviour
 
         // follow position of target treasure if there is one
         if (treasurePosition != null) {
-            SetPikminTargetTreasure(treasurePosition.transform.position);
+            SetPikminTargetTreasure(treasurePosition);
         }
     }
     // regular point and click movement
@@ -156,7 +156,7 @@ public class MoveCharacter : MonoBehaviour
         // follow position of target treasure if there is one
         if (treasurePosition != null)
         {
-            SetPikminTargetTreasure(treasurePosition.transform.position);
+            SetPikminTargetTreasure(treasurePosition);
         }
     }
 

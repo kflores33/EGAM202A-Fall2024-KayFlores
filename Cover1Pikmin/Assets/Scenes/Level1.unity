@@ -836,7 +836,7 @@ GameObject:
   - component: {fileID: 1032920936}
   - component: {fileID: 1032920935}
   - component: {fileID: 1032920934}
-  - component: {fileID: 1032920933}
+  - component: {fileID: 1032920937}
   m_Layer: 0
   m_Name: Cylinder
   m_TagString: Untagged
@@ -844,29 +844,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!136 &1032920933
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1032920932}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.48
-  m_Height: 0
-  m_Direction: 1
-  m_Center: {x: 0.0000000738138, y: 0.0000046133628, z: -0.0000000738138}
 --- !u!23 &1032920934
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -934,6 +911,22 @@ Transform:
   - {fileID: 875018605}
   m_Father: {fileID: 955675399}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!208 &1032920937
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1032920932}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 0
+  m_Extents: {x: 0.22, y: 0.5, z: 0.22}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &1045593105
 GameObject:
   m_ObjectHideFlags: 0
@@ -975,7 +968,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2091933397733004058, guid: a382724b17ac46d43b5ef02a6b451bbe, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -23.38
+      value: 5.11
       objectReference: {fileID: 0}
     - target: {fileID: 2091933397733004058, guid: a382724b17ac46d43b5ef02a6b451bbe, type: 3}
       propertyPath: m_LocalPosition.y
@@ -983,7 +976,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2091933397733004058, guid: a382724b17ac46d43b5ef02a6b451bbe, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.28
+      value: -5.77
       objectReference: {fileID: 0}
     - target: {fileID: 2091933397733004058, guid: a382724b17ac46d43b5ef02a6b451bbe, type: 3}
       propertyPath: m_LocalRotation.w

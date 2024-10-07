@@ -1,6 +1,7 @@
 using Cinemachine.Examples;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UIElements;
@@ -35,22 +36,13 @@ public class ClickManager : MonoBehaviour
                 // if a pikmin is selected
                 if (pikmin != null)
                 {
-                    // if another pikmin is selected while one is active, deselect current pikmin and select new
-                    if (activePikmin != null)
-                    {
-                        activePikmin.currentState = MoveCharacter.PikminStates.Idle;
-
-                        activePikmin = null;
-                    }
-
-                    // set this selected pikmin as the active one
-                    pikmin.currentState = MoveCharacter.PikminStates.Selected;
-                    activePikmin = pikmin;
+                    // you can pass shit into functions like this!!! cool!!!
+                    PikminClicked(pikmin);
                 }
                 // if there is a pikmin active and something other than the pikmin is selected, set target position
                 else if (activePikmin != null)
                 {
-                    activePikmin.SetPikminTarget(hitInfo.point);
+                    ActivePikminClickedNonPikmin(activePikmin, hitInfo);
 
                     // this is the problem lol
                     if (treasure != null)
@@ -58,23 +50,45 @@ public class ClickManager : MonoBehaviour
                         treasureTarget = treasure;
                         activeTreasure = treasure;
 
-                        activePikmin.SetPikminTargetTreasure(treasureTarget.transform.position);
+                        activePikmin.SetPikminTargetTreasure(treasureTarget.transform);
 
                         activePikmin.currentState = MoveCharacter.PikminStates.MoveToTarget;
+
                         activePikmin = null;
                     }
                     
-                    
+
                     // (this designates the position where the mouse button was clicked as the target)
                 }
 
 
                 // if treasure is clicked on and that treasure has enough pikmin carrying it, set it active
-                else if (activeTreasure != null && activeTreasure.currentState == TreasureScript.TreasureStates.BeingCarried )
+                else if (activeTreasure != null)
                 {
+                    if (activeTreasure.currentState == TreasureScript.TreasureStates.BeingCarried)
                     activeTreasure.SetTreasureTarget(hitInfo.point);
                 }
             }
         }
+    }
+
+    void PikminClicked(MoveCharacter pikmin)
+    {
+        // if another pikmin is selected while one is active, deselect current pikmin and select new
+        if (activePikmin != null)
+        {
+            activePikmin.currentState = MoveCharacter.PikminStates.Idle;
+
+            activePikmin = null;
+        }
+
+        // set this selected pikmin as the active one
+        pikmin.currentState = MoveCharacter.PikminStates.Selected;
+        activePikmin = pikmin;
+    }
+    void ActivePikminClickedNonPikmin(MoveCharacter pikmin, RaycastHit hitInfo)
+    {
+        // deselect
+        activePikmin.SetPikminTarget(hitInfo.point);
     }
 }
