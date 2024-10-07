@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1432546487688476638}
   - component: {fileID: 282487097754146380}
   - component: {fileID: 6041060725810015322}
-  m_Layer: 5
+  m_Layer: 2
   m_Name: Carrying
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -298,6 +298,8 @@ MonoBehaviour:
   agent: {fileID: 949184670507908879}
   activeIndicator: {fileID: 2131090985515207503}
   targetIndicator: {fileID: 0}
+  carryIndicator: {fileID: 4584342766572231052}
+  tryingToCarryIndicator: {fileID: 7285359433881835649}
   clickManager: {fileID: 0}
   rb: {fileID: 0}
   moveSpeed: 5
@@ -398,13 +400,13 @@ GameObject:
   - component: {fileID: 1344914657498770623}
   - component: {fileID: 7969638954003316837}
   - component: {fileID: 2005711088497359754}
-  m_Layer: 5
+  m_Layer: 2
   m_Name: TryingToCarry
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1344914657498770623
 RectTransform:
   m_ObjectHideFlags: 0
@@ -534,7 +536,7 @@ GameObject:
   - component: {fileID: 5039755608762492574}
   - component: {fileID: 6674244742358835860}
   - component: {fileID: 7008276904384311245}
-  m_Layer: 5
+  m_Layer: 2
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -548,18 +550,18 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7654904562022351318}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.5}
+  m_LocalRotation: {x: 0, y: -0.38268343, z: 0, w: 0.92387956}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1432546487688476638}
   - {fileID: 1344914657498770623}
   m_Father: {fileID: 2131090985515207503}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -45, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 1.3}
   m_SizeDelta: {x: 1, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &6442207019672615277
@@ -620,11 +622,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_IgnoreReversedGraphics: 1
+  m_IgnoreReversedGraphics: 0
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4294967295
 --- !u!114 &7008276904384311245
 MonoBehaviour:
   m_ObjectHideFlags: 0

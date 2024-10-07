@@ -8,6 +8,7 @@ public class MoveCharacter : MonoBehaviour
 {
     public NavMeshAgent agent;
 
+    [Header("Visual Indicator Variables")]
     public Transform activeIndicator;
     public Transform targetIndicator;
 
@@ -16,21 +17,18 @@ public class MoveCharacter : MonoBehaviour
 
     public GameObject clickManager;
 
-    public Rigidbody rb;
-
     public float moveSpeed;
 
-    [Header("Line Renderer Variables")]
-    public LineRenderer lineRenderer;
-    public Color startColor;
-    public Color endColor;
+    [Header("bools")]
+    public bool hasTreasureTarget;
+    public bool hasNormalTarget;
 
     public enum PikminStates
     {
         Idle,
         Selected,
-        Carrying,
-        TryingToCarry
+        MoveToTreasure,
+        MoveToTarget
     }
 
     public PikminStates currentState;
@@ -46,10 +44,10 @@ public class MoveCharacter : MonoBehaviour
                 UpdateIdle() ; break;
             case PikminStates.Selected:
                 UpdateSelected() ; break;
-            case PikminStates.Carrying:
-                UpdateCarrying(); break;
-            case PikminStates.TryingToCarry:
-                UpdateTryingToCarry(); break;
+            case PikminStates.MoveToTreasure:
+                UpdateMoveToTreasure(); break;
+            case PikminStates.MoveToTarget:
+                UpdateMoveToTarget(); break;
         }
     }
 
@@ -66,6 +64,16 @@ public class MoveCharacter : MonoBehaviour
         // set target indicator active 
         targetIndicator.gameObject.SetActive(true);
         targetIndicator.position = position;
+
+        hasNormalTarget = true;
+
+        // sets the target position to the targetIndicator's transform
+        agent.SetDestination(position);
+    }
+
+    public void SetPikminTargetTreasure(Vector3 position)
+    {
+        hasTreasureTarget = true;
 
         // sets the target position to the targetIndicator's transform
         agent.SetDestination(position);
@@ -88,18 +96,19 @@ public class MoveCharacter : MonoBehaviour
 
     void UpdateIdle()
     {
+        // visual indicators
         SetPikminActive(false);
         tryingToCarryIndicator.SetActive(false);
         carryIndicator.SetActive(false);
     }
     void UpdateSelected()
     {
+        // visual indicators
         SetPikminActive(true);
         tryingToCarryIndicator.SetActive(false);
         carryIndicator.SetActive(false);
 
-        agent.enabled = true;
-
+        // deselect
         if (Input.GetMouseButtonDown(1))
         {
             if (clickManager.GetComponent<ClickManager>().activePikmin != null)
@@ -110,23 +119,24 @@ public class MoveCharacter : MonoBehaviour
             }
         }
     }
-    void UpdateCarrying()
+    void UpdateMoveToTreasure()
     {
+        // visual indicators
         tryingToCarryIndicator.SetActive(false);
-
         SetPikminActive(true);
         carryIndicator.SetActive(true );
+
+
         clickManager.GetComponent<ClickManager>().activePikmin = null;
-
-        agent.enabled = false;
-
     }
-    void UpdateTryingToCarry()
+    // regular point and click movement
+    void UpdateMoveToTarget()
     {
+        // visual indicators
         carryIndicator.SetActive(false);
+        tryingToCarryIndicator.SetActive(true);
+        SetPikminActive(true);
 
-        tryingToCarryIndicator.SetActive(true );
-        agent.enabled = false;
-        SetPikminActive(false);
+
     }
 }

@@ -16,6 +16,8 @@ public class TreasureScript : MonoBehaviour
 
     public GameObject clickManager;
 
+    public float moveSpeed;
+
     public int numberOfPikminRequired;
     public int numberOfPikminCurrent;
 
@@ -40,18 +42,11 @@ public class TreasureScript : MonoBehaviour
                 UpdateIdle();break;
             case TreasureStates.BeingCarried:
                 UpdateBeingCarried(); break;
-             case TreasureStates.TryingToCarry:
-                UpdateTryingToCarry(); break;
         }
     }
 
     void FixedUpdate()
     {
-        if (numberOfPikminCurrent == numberOfPikminRequired)
-        {
-            currentState = TreasureStates.BeingCarried;
-        }
-
         Vector3 ourPosition = transform.position;
         Vector3 targetPosition = targetIndicator.position;
 
@@ -64,32 +59,10 @@ public class TreasureScript : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider col)
+    private void OnCollisionEnter(Collision col)
     {
         MoveCharacter pikmin = col.gameObject.GetComponent<MoveCharacter>();
-        if (pikmin != null) 
-        {
-            // checks each position to see if it has a child (pikmin)
-            // if yes, check next position in the list
-            foreach (Transform t in PossiblePositions)
-            {
-                // if no, make the pikmin a child of that position and break the loop
-                if (t.transform.childCount == 0)
-                {
-                    Debug.Log("set pikmin as child");
 
-                    pikmin.currentState = MoveCharacter.PikminStates.TryingToCarry;
-                    pikmin.transform.SetParent(t);
-
-                    clickManager.GetComponent<ClickManager>().activePikmin = null;
-
-                    currentState = TreasureStates.TryingToCarry;
-
-                    ++numberOfPikminCurrent;
-                    break;
-                }
-            }
-        }
     }
 
     public void SetTreasureActive(bool isActive)
@@ -114,46 +87,27 @@ public class TreasureScript : MonoBehaviour
     {
         Debug.Log("pikmin dismissed");
 
-        foreach (Transform t in PossiblePositions)
-        {
-            MoveCharacter pikmin = t.gameObject.GetComponentInChildren<MoveCharacter>();
-            if (t.transform.childCount > 0)
-            {   
-                pikmin.currentState = MoveCharacter.PikminStates.Idle;
-                pikmin.transform.SetParent(null);
-            }
-            break;
-        }
         numberOfPikminCurrent = 0;
+
+        currentState = TreasureStates.Idle;
     }
     public void SetPositionOfChild()
     {
-        foreach (Transform t in PossiblePositions)
-        {
-            MoveCharacter pikmin = t.gameObject.GetComponentInChildren<MoveCharacter>();
-            if (t.transform.childCount > 0)
-            {
-                // switch pikmin state
-                if (pikmin.currentState != MoveCharacter.PikminStates.Carrying) 
-                { 
-                    pikmin.currentState = MoveCharacter.PikminStates.Carrying;
-                }
-                // transform pikmin with treasure object
-                pikmin.transform.localPosition = new Vector3(0, 0, 0);
-            }
-            break;
-        }
+
     }
 
     void UpdateIdle()
     {
         SetTreasureActive(false); 
-        agent.enabled = false;
+
+        if (numberOfPikminCurrent >= numberOfPikminRequired)
+        {
+            currentState = TreasureStates.BeingCarried;
+        }
     }
     void UpdateBeingCarried()
     {
         SetTreasureActive(true);
-        agent.enabled = true;
 
         // move children with treasure
         SetPositionOfChild();
@@ -162,19 +116,6 @@ public class TreasureScript : MonoBehaviour
         {
             DismissPikmin();
             clickManager.GetComponent<ClickManager>().activeTreasure = null;
-            currentState = TreasureStates.Idle;
-        }
-    }
-    void UpdateTryingToCarry()
-    {
-        SetTreasureActive(false);
-        agent.enabled = false;
-
-        if (Input.GetMouseButtonDown(1))
-        {
-            DismissPikmin();
-            clickManager.GetComponent<ClickManager>().activeTreasure = null;
-            currentState = TreasureStates.Idle;
         }
     }
 }

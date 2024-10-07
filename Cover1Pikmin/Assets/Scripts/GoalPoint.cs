@@ -32,28 +32,27 @@ public class GoalPoint : MonoBehaviour
         MoveCharacter pikmin = col.GetComponent<MoveCharacter>();
         if (pikmin != null)
         {
-            // check which pikmin it is
-            if (pikmin.GetComponent<FireAttribute>() != null && !fireHasScored)
-            {
-                IncreasePoints();
-                fireHasScored = true;
-            }
-            else if (pikmin.GetComponent<WaterAttribute>() != null && !waterHasScored)
-            {
-                IncreasePoints();
-                waterHasScored = true;
-            }
-            else if(pikmin.GetComponent<ElectricAttribute>() != null && !electricHasScored)
-            {
-                IncreasePoints();
-                electricHasScored = true;
-            }
+            IncreasePoints();
+        }
+    }
+
+    private void OnTriggerExit(Collider col)
+    {
+        MoveCharacter pikmin = col.GetComponent<MoveCharacter>();
+        if (pikmin != null)
+        {
+            DecreasePoints();
         }
     }
 
     void IncreasePoints()
     {
         score += 1;
+        scoreText.SetText(score.ToString());
+    }
+    void DecreasePoints()
+    {
+        score -= 1;
         scoreText.SetText(score.ToString());
     }
 }
