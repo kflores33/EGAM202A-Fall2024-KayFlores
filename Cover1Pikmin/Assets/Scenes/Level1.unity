@@ -331,10 +331,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1719672647064202336, guid: d0b5bef81c42cd847a682514b2ec5c45, type: 3}
-      propertyPath: m_IsKinematic
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 2131090985515207503, guid: d0b5bef81c42cd847a682514b2ec5c45, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1
@@ -374,18 +370,6 @@ PrefabInstance:
     - target: {fileID: 2131090985515207503, guid: d0b5bef81c42cd847a682514b2ec5c45, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2903147071783658084, guid: d0b5bef81c42cd847a682514b2ec5c45, type: 3}
-      propertyPath: outlineColor.b
-      value: 0.58805025
-      objectReference: {fileID: 0}
-    - target: {fileID: 2903147071783658084, guid: d0b5bef81c42cd847a682514b2ec5c45, type: 3}
-      propertyPath: outlineColor.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2903147071783658084, guid: d0b5bef81c42cd847a682514b2ec5c45, type: 3}
-      propertyPath: outlineColor.r
-      value: 0.9527805
       objectReference: {fileID: 0}
     - target: {fileID: 5398089567372653897, guid: d0b5bef81c42cd847a682514b2ec5c45, type: 3}
       propertyPath: clickManager
@@ -920,22 +904,6 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 1577182249}
-    - target: {fileID: 1633082888044006476, guid: fe54622c4ef896846b6b6a5bb3b5d269, type: 3}
-      propertyPath: outlineColor.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1633082888044006476, guid: fe54622c4ef896846b6b6a5bb3b5d269, type: 3}
-      propertyPath: outlineColor.g
-      value: 0.39937097
-      objectReference: {fileID: 0}
-    - target: {fileID: 1633082888044006476, guid: fe54622c4ef896846b6b6a5bb3b5d269, type: 3}
-      propertyPath: outlineColor.r
-      value: 0.40189475
-      objectReference: {fileID: 0}
-    - target: {fileID: 1814239648290947395, guid: fe54622c4ef896846b6b6a5bb3b5d269, type: 3}
-      propertyPath: m_IsKinematic
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 2914707874589197810, guid: fe54622c4ef896846b6b6a5bb3b5d269, type: 3}
       propertyPath: mainCamera
       value: 
@@ -1022,18 +990,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1621107260507458697, guid: a382724b17ac46d43b5ef02a6b451bbe, type: 3}
-      propertyPath: outlineColor.b
-      value: 0.52285296
-      objectReference: {fileID: 0}
-    - target: {fileID: 1621107260507458697, guid: a382724b17ac46d43b5ef02a6b451bbe, type: 3}
-      propertyPath: outlineColor.g
-      value: 0.48742133
-      objectReference: {fileID: 0}
-    - target: {fileID: 1621107260507458697, guid: a382724b17ac46d43b5ef02a6b451bbe, type: 3}
-      propertyPath: outlineColor.r
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 2091933397733004058, guid: a382724b17ac46d43b5ef02a6b451bbe, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1086,10 +1042,6 @@ PrefabInstance:
       propertyPath: mainCamera
       value: 
       objectReference: {fileID: 1577182249}
-    - target: {fileID: 6870529591196485652, guid: a382724b17ac46d43b5ef02a6b451bbe, type: 3}
-      propertyPath: m_IsKinematic
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 7068843219228387031, guid: a382724b17ac46d43b5ef02a6b451bbe, type: 3}
       propertyPath: m_Camera
       value: 

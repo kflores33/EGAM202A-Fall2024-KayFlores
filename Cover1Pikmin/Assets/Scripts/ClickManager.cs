@@ -50,21 +50,21 @@ public class ClickManager : MonoBehaviour
                 // if there is a pikmin active and something other than the pikmin is selected, set target position
                 else if (activePikmin != null)
                 {
-                    // (this designates the position where the mouse button was clicked as the target)
-                    activePikmin.SetPikminTarget(hitInfo.point);                
-                    
-                    // set pikmin's target treasure
+
                     if (treasure != null)
                     {
                         treasureTarget = treasure;            
                         activeTreasure = treasure;
 
-                        activePikmin.currentState = MoveCharacter.PikminStates.MoveToTreasure;
+                        activePikmin.currentState = MoveCharacter.PikminStates.MoveToTarget;
+                        
                         activePikmin = null;
                     }
+                    else
+                    activePikmin.SetPikminTarget(hitInfo.point);
+                    // (this designates the position where the mouse button was clicked as the target)
                 }
                 // if treasure is clicked on and that treasure has enough pikmin carrying it, set it active
-
                 else if (activeTreasure != null && activeTreasure.currentState == TreasureScript.TreasureStates.BeingCarried )
                 {
                     activeTreasure.SetTreasureTarget(hitInfo.point);

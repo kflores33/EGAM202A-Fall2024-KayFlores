@@ -70,7 +70,6 @@ public class MoveCharacter : MonoBehaviour
 
     public void SetPikminTargetTreasure(Vector3 position)
     {
-        treasurePosition = clickManager.GetComponent<ClickManager>().treasureTarget.transform;
         treasurePosition.position = position;
 
         // sets the target position to the targetIndicator's transform
@@ -166,12 +165,12 @@ public class MoveCharacter : MonoBehaviour
         // switches the state on collision
         switch (currentState)
         {
-            case PikminStates.MoveToTreasure:        
-                
+            case PikminStates.MoveToTarget:        
+                 Debug.Log("collided with treasure");
             // if collided with target treasure, move towards it
             if (treasure == treasurePosition) 
             {
-                Debug.Log("collided with treasure");    
+ 
                 currentState = PikminStates.MoveToTreasure;
                 treasurePosition.GetComponent<TreasureScript>().AddToPikminList(this);
             }
