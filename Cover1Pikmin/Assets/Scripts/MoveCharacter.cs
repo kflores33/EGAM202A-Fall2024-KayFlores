@@ -138,6 +138,8 @@ public class MoveCharacter : MonoBehaviour
         SetPikminActive(true);
         carryIndicator.SetActive(true);
 
+        treasurePosition = clickManager.GetComponent<ClickManager>().treasureTarget.transform;
+
         // follow position of target treasure if there is one
         if (treasurePosition != null) {
             SetPikminTargetTreasure(treasurePosition.transform.position);
