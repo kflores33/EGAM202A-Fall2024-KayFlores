@@ -14,6 +14,8 @@ public class ClickManager : MonoBehaviour
     public MoveCharacter activePikmin = null;
     public TreasureScript activeTreasure = null;
 
+    public TreasureScript treasureTarget = null;
+
     // regular update is ok for this cause movement uses transform instead of add force/physics
     void Update()
     {
@@ -49,13 +51,23 @@ public class ClickManager : MonoBehaviour
                 else if (activePikmin != null)
                 {
                     // (this designates the position where the mouse button was clicked as the target)
-                    activePikmin.SetPikminTarget(hitInfo.point);
-                }
+                    activePikmin.SetPikminTarget(hitInfo.point);                
+                    
+                    // set pikmin's target treasure
+                    if (treasure != null)
+                    {
+                        treasureTarget = treasure;            
+                        activeTreasure = treasure;
 
-                // select previously unselected treasure
-                else if (treasure != null && activePikmin != null)
+                        activePikmin.currentState = MoveCharacter.PikminStates.MoveToTreasure;
+                        activePikmin = null;
+                    }
+                }
+                // if treasure is clicked on and that treasure has enough pikmin carrying it, set it active
+
+                else if (activeTreasure != null && activeTreasure.currentState == TreasureScript.TreasureStates.BeingCarried )
                 {
-                    activePikmin.SetPikminTargetTreasure(treasure.transform.position);
+                    activeTreasure.SetTreasureTarget(hitInfo.point);
                 }
             }
         }

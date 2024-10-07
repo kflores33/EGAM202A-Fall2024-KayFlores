@@ -6,7 +6,7 @@ using UnityEngine.AI;
 public class TreasureScript : MonoBehaviour
 {
     // Create a list to house position transforms
-    public List<Transform> PossiblePositions = new List<Transform>();
+    public List<MoveCharacter> PikminList = new List<MoveCharacter>();
     public Collider Collider;
 
     public NavMeshAgent agent;
@@ -42,6 +42,8 @@ public class TreasureScript : MonoBehaviour
                 UpdateIdle();break;
             case TreasureStates.BeingCarried:
                 UpdateBeingCarried(); break;
+                case TreasureStates.TryingToCarry:
+                UpdateTryingToCarry(); break;
         }
     }
 
@@ -51,18 +53,12 @@ public class TreasureScript : MonoBehaviour
         Vector3 targetPosition = targetIndicator.position;
 
         // transform player towards destination and stop if close enough
-        Vector3 delta = (ourPosition - targetPosition);
+        Vector3 delta = ((ourPosition - targetPosition) * moveSpeed);
 
         if (delta.magnitude < 1f)
         {
             targetIndicator.gameObject.SetActive(false);
         }
-    }
-
-    private void OnCollisionEnter(Collision col)
-    {
-        MoveCharacter pikmin = col.gameObject.GetComponent<MoveCharacter>();
-
     }
 
     public void SetTreasureActive(bool isActive)
@@ -82,35 +78,74 @@ public class TreasureScript : MonoBehaviour
         agent.SetDestination(position);
     }
 
-    // doesnt work
     public void DismissPikmin()
     {
         Debug.Log("pikmin dismissed");
 
         numberOfPikminCurrent = 0;
 
+        foreach (MoveCharacter pikmin in PikminList) 
+        { 
+
+            RemoveFromPikminList(pikmin);
+
+            break;
+        }
+
+
         currentState = TreasureStates.Idle;
     }
-    public void SetPositionOfChild()
+    public void AddToPikminList(MoveCharacter pikmin)
     {
+        if (PikminList.Contains(pikmin) == false) 
+        { 
+            PikminList.Add(pikmin);
+            CheckAmountInPikminList();
+        }
+    }
 
+    public void RemoveFromPikminList(MoveCharacter pikmin)
+    {
+        PikminList.Remove(pikmin);
+        CheckAmountInPikminList();
+    }
+
+    void CheckAmountInPikminList()
+    {
+        if (PikminList.Count >= numberOfPikminRequired)
+        {
+            currentState = TreasureStates.BeingCarried;
+        }
+        else
+        {
+            currentState = TreasureStates.Idle;
+        }
     }
 
     void UpdateIdle()
     {
         SetTreasureActive(false); 
 
-        if (numberOfPikminCurrent >= numberOfPikminRequired)
-        {
-            currentState = TreasureStates.BeingCarried;
-        }
+        agent.enabled = false;
     }
     void UpdateBeingCarried()
     {
         SetTreasureActive(true);
 
-        // move children with treasure
-        SetPositionOfChild();
+        agent.enabled = true;
+
+        if (Input.GetMouseButtonDown(1))
+        {
+            DismissPikmin();
+            clickManager.GetComponent<ClickManager>().activeTreasure = null;
+        }
+    }
+
+    void UpdateTryingToCarry()
+    {
+        SetTreasureActive(true);
+
+        agent.enabled = false;
 
         if (Input.GetMouseButtonDown(1))
         {

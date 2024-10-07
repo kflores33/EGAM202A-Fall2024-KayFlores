@@ -19,9 +19,8 @@ public class MoveCharacter : MonoBehaviour
 
     public float moveSpeed;
 
-    [Header("bools")]
-    public bool hasTreasureTarget;
-    public bool hasNormalTarget;
+    [Header("Target Positions")]
+    public Transform treasurePosition;
 
     public enum PikminStates
     {
@@ -65,18 +64,28 @@ public class MoveCharacter : MonoBehaviour
         targetIndicator.gameObject.SetActive(true);
         targetIndicator.position = position;
 
-        hasNormalTarget = true;
-
         // sets the target position to the targetIndicator's transform
         agent.SetDestination(position);
     }
 
     public void SetPikminTargetTreasure(Vector3 position)
     {
-        hasTreasureTarget = true;
+        treasurePosition = clickManager.GetComponent<ClickManager>().treasureTarget.transform;
+        treasurePosition.position = position;
 
         // sets the target position to the targetIndicator's transform
         agent.SetDestination(position);
+    }
+    public void ForgetTreasureTarget()
+    {
+        currentState = PikminStates.Idle;
+
+        if (treasurePosition != null) 
+        { 
+            treasurePosition.GetComponent<TreasureScript>().RemoveFromPikminList(this);
+        }
+
+        treasurePosition = null;
     }
 
     // Update is called once per frame
@@ -86,7 +95,7 @@ public class MoveCharacter : MonoBehaviour
         Vector3 targetPosition = targetIndicator.position;
 
         // transform player towards destination and stop if close enough
-        Vector3 delta = (ourPosition - targetPosition);
+        Vector3 delta = ((ourPosition - targetPosition)*moveSpeed);
 
         if (delta.magnitude < 1f)
         {
@@ -117,17 +126,23 @@ public class MoveCharacter : MonoBehaviour
 
                 clickManager.GetComponent<ClickManager>().activePikmin = null;
             }
+
+            ForgetTreasureTarget();
         }
     }
+
+    // should be called follow treasure (more accurate tbh)
     void UpdateMoveToTreasure()
     {
         // visual indicators
         tryingToCarryIndicator.SetActive(false);
         SetPikminActive(true);
-        carryIndicator.SetActive(true );
+        carryIndicator.SetActive(true);
 
-
-        clickManager.GetComponent<ClickManager>().activePikmin = null;
+        // follow position of target treasure if there is one
+        if (treasurePosition != null) {
+            SetPikminTargetTreasure(treasurePosition.transform.position);
+        }
     }
     // regular point and click movement
     void UpdateMoveToTarget()
@@ -137,6 +152,30 @@ public class MoveCharacter : MonoBehaviour
         tryingToCarryIndicator.SetActive(true);
         SetPikminActive(true);
 
+        // follow position of target treasure if there is one
+        if (treasurePosition != null)
+        {
+            SetPikminTargetTreasure(treasurePosition.transform.position);
+        }
+    }
 
+    private void OnTriggerEnter(Collider col)
+    {
+        TreasureScript treasure = col.gameObject.GetComponent<TreasureScript>();
+        Debug.Log("collided at all");
+        // switches the state on collision
+        switch (currentState)
+        {
+            case PikminStates.MoveToTreasure:        
+                
+            // if collided with target treasure, move towards it
+            if (treasure == treasurePosition) 
+            {
+                Debug.Log("collided with treasure");    
+                currentState = PikminStates.MoveToTreasure;
+                treasurePosition.GetComponent<TreasureScript>().AddToPikminList(this);
+            }
+            break;
+        }
     }
 }
