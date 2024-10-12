@@ -30,7 +30,7 @@ BlendTree:
   m_BlendParameterY: VelocityZ
   m_MinThreshold: 0
   m_MaxThreshold: 1
-  m_UseAutomaticThresholds: 0
+  m_UseAutomaticThresholds: 1
   m_NormalizedBlendValues: 0
   m_BlendType: 0
 --- !u!1102 &-5264212522423697435
@@ -202,7 +202,8 @@ BlendTree:
   m_Name: Blend Tree
   m_Childs:
   - serializedVersion: 2
-    m_Motion: {fileID: 7400008, guid: 080945c46afd34f3ebc364c1696e6678, type: 3}
+    m_Motion: {fileID: 3094330708855449807, guid: ebf6d636f0bdc7642bca3e831800df09,
+      type: 3}
     m_Threshold: 0
     m_Position: {x: 0, y: 0}
     m_TimeScale: 1

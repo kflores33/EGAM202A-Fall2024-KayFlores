@@ -11,12 +11,18 @@ public class PlayerAnimationController : MonoBehaviour
     public Animator animator;
     float blendZ = 0.0f;
     float blendX = 0.0f;
+
+    // jump pos variable
+    float blendY = 0.0f;
+
     public float acceleration = 0.5f;
     public float deceleration = 0.5f;
 
     // increase performance
     int BlendZHash;
     int BlendXHash;
+
+    int BlendYHash;
 
     // Start is called before the first frame update
     void Start()
@@ -26,6 +32,8 @@ public class PlayerAnimationController : MonoBehaviour
         // increase performance
         BlendZHash = Animator.StringToHash("VelocityZ");
         BlendXHash = Animator.StringToHash("VelocityX");
+
+        BlendYHash = Animator.StringToHash("PosY");
     }
 
     // handles acceleration and deceleration
@@ -59,6 +67,18 @@ public class PlayerAnimationController : MonoBehaviour
             blendX = 0.0f;
     }
 
+    void changeYPos(bool spacePressed)
+    {
+        if (spacePressed && blendY < 1f)
+        {
+            blendY += Time.deltaTime * acceleration;
+        }
+        if (!spacePressed && blendY < 0.0f)
+        {
+            blendY -= Time.deltaTime * deceleration;
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -70,6 +90,8 @@ public class PlayerAnimationController : MonoBehaviour
         bool rightPressed = Input.GetKey(KeyCode.D);
         bool spacePressed = Input.GetKey(KeyCode.Space);
 
+        changeVelocity(forwardPressed, backPressed, leftPressed, rightPressed);
+
         animator.SetFloat(BlendXHash, blendX);
         animator.SetFloat(BlendZHash, blendZ);
     }
@@ -77,6 +99,8 @@ public class PlayerAnimationController : MonoBehaviour
     void JumpAnimationCheck()
     {
         int layerJump = animator.GetLayerIndex("Jumping");
+
+        bool jumpPressed = Input.GetKey(KeyCode.Space);
 
         // check if grounded, let jump animation play if not
         if (moveScript.grounded == false)
@@ -88,5 +112,8 @@ public class PlayerAnimationController : MonoBehaviour
             animator.SetLayerWeight(layerJump, 0);
         }
 
+        changeYPos(jumpPressed);
+
+        animator.SetFloat(BlendYHash, blendY);
     }
 }
