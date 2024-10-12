@@ -88,6 +88,8 @@ public class PlayerMovement : MonoBehaviour
         {
             readyToJump = false;
 
+            Jump();
+
             // allows for continuous jumping if jump key is held down
             Invoke(nameof(ResetJump), jumpCooldown);
         }

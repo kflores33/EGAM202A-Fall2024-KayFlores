@@ -9,6 +9,9 @@ public class PlayerAnimationController : MonoBehaviour
 
     public PlayerMovement moveScript;
     public Animator animator;
+
+    public Transform playerTransform;
+
     float blendZ = 0.0f;
     float blendX = 0.0f;
 
@@ -22,7 +25,7 @@ public class PlayerAnimationController : MonoBehaviour
     int BlendZHash;
     int BlendXHash;
 
-    int BlendYHash;
+    IEnumerator jumpCoroutine;
 
     // Start is called before the first frame update
     void Start()
@@ -32,8 +35,6 @@ public class PlayerAnimationController : MonoBehaviour
         // increase performance
         BlendZHash = Animator.StringToHash("VelocityZ");
         BlendXHash = Animator.StringToHash("VelocityX");
-
-        BlendYHash = Animator.StringToHash("PosY");
     }
 
     // handles acceleration and deceleration
@@ -67,22 +68,10 @@ public class PlayerAnimationController : MonoBehaviour
             blendX = 0.0f;
     }
 
-    void changeYPos(bool spacePressed)
-    {
-        if (spacePressed && blendY < 1f)
-        {
-            blendY += Time.deltaTime * acceleration;
-        }
-        if (!spacePressed && blendY < 0.0f)
-        {
-            blendY -= Time.deltaTime * deceleration;
-        }
-    }
-
     // Update is called once per frame
     void Update()
     {
-        //JumpAnimationCheck();
+        JumpAnimationCheck();
 
         bool forwardPressed = Input.GetKey(KeyCode.W);
         bool backPressed = Input.GetKey(KeyCode.S);
@@ -90,7 +79,11 @@ public class PlayerAnimationController : MonoBehaviour
         bool rightPressed = Input.GetKey(KeyCode.D);
         bool spacePressed = Input.GetKey(KeyCode.Space);
 
-        changeVelocity(forwardPressed, backPressed, leftPressed, rightPressed);
+        // if grounded, play move animations
+        if (moveScript.grounded)
+        {
+            changeVelocity(forwardPressed, backPressed, leftPressed, rightPressed);
+        }
 
         animator.SetFloat(BlendXHash, blendX);
         animator.SetFloat(BlendZHash, blendZ);
@@ -98,22 +91,35 @@ public class PlayerAnimationController : MonoBehaviour
 
     void JumpAnimationCheck()
     {
-        int layerJump = animator.GetLayerIndex("Jumping");
-
         bool jumpPressed = Input.GetKey(KeyCode.Space);
 
         // check if grounded, let jump animation play if not
-        if (moveScript.grounded == false)
+        if (jumpPressed && jumpCoroutine == null)
         {
-            animator.SetLayerWeight(layerJump, 1);
+            jumpCoroutine = JumpCoroutine();
+            StartCoroutine(jumpCoroutine);
         }
-        else
-        {
-            animator.SetLayerWeight(layerJump, 0);
-        }
+    }
 
-        changeYPos(jumpPressed);
+    IEnumerator JumpCoroutine()
+    {
+        int layerJump = animator.GetLayerIndex("Jumping");
 
-        animator.SetFloat(BlendYHash, blendY);
+        //// do the jump animation
+        //animator.SetLayerWeight(layerJump, 1);
+        
+        // change PosY value to 1, then gradually decrease to like 0.5 
+
+        // wait
+        yield return new WaitForSeconds(1.2f);
+
+        //// reset layer weight
+        //animator.SetLayerWeight(layerJump, 0);
+
+
+        // stop coroutine
+        StopCoroutine(jumpCoroutine);
+        jumpCoroutine = null;
+        
     }
 }
