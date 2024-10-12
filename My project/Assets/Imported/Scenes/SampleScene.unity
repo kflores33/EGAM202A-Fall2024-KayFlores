@@ -3055,6 +3055,8 @@ MonoBehaviour:
   playerTransform: {fileID: 1791477643}
   acceleration: 8
   deceleration: 8
+  jumpAcceleration: 0.5
+  jumpDeceleration: 6
 --- !u!114 &1791477645
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3067,18 +3069,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d4c52e59868ad941b97328c3fcbc03b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 22
+  moveSpeed: 25
   rotationSpeed: 0
   acceleration: 0.1
   deceleration: 0.5
   groundDrag: 3
-  jumpForce: 55
+  jumpForce: 80
   jumpCooldown: 0.25
   airMultiplier: 1
   readyToJump: 0
   canJump: 0
   jumpKey: 32
-  playerHeight: 10
+  playerHeight: 1
   whatIsGround:
     serializedVersion: 2
     m_Bits: 8
