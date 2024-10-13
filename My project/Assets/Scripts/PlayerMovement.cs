@@ -179,7 +179,10 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        grounded = collision.gameObject.GetComponent<Ground>();
+        if (collision.gameObject.GetComponent<Ground>() != null)
+        {
+            grounded = true;
+        }
     }
     private void OnCollisionExit(Collision collision) 
     {
