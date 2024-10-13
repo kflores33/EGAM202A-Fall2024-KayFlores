@@ -18,6 +18,9 @@ public class PlayerMovement : MonoBehaviour
 
     public float jumpForce;
     public float jumpCooldown;
+
+    public Coroutine jumpCDCoroutine;
+
     public float airMultiplier;
     public bool readyToJump;
     public bool canJump;
@@ -52,9 +55,7 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         // ground check (raycast from center of player down)
-        grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIsGround);
-
-        Debug.DrawLine(transform.position, Vector3.down);
+        //grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIsGround);
 
         // records player input
         MyInput();
@@ -66,15 +67,30 @@ public class PlayerMovement : MonoBehaviour
         {
             rb.drag = groundDrag;
         }
-        else {
+        else 
+        {            
             rb.drag = 0;
         }
     }
 
+    // for physics/force related things
     void FixedUpdate()
     {
         // player movement
         MovePlayer();
+
+        if (canJump) 
+        { 
+            if (jumpCDCoroutine == null) 
+            {
+                Debug.Log("start coroutine");
+
+                Jump();
+                canJump = false;
+
+                jumpCDCoroutine = StartCoroutine(JumpCD());
+            }
+        }
     }
 
     // gets player movement input
@@ -83,23 +99,19 @@ public class PlayerMovement : MonoBehaviour
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
 
-        // * need to get the input to be relative to the direction the camera is facing
-
         // when to jump
         if (Input.GetKey(jumpKey) && readyToJump && grounded) 
         {
             readyToJump = false;
-
-            Jump();
-
+            canJump = true;
             // allows for continuous jumping if jump key is held down
-            Invoke(nameof(ResetJump), jumpCooldown);
+            //Invoke(nameof(ResetJump), jumpCooldown);
         }
+        // * need to get the input to be relative to the direction the camera is facing
     }
 
     private void MovePlayer()
     {
-        
         // calculate movement direction (makes movement follow camera direction)
         moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
 
@@ -131,7 +143,7 @@ public class PlayerMovement : MonoBehaviour
             rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
         }
     }
-
+    // actually does the physics part of the jump
     private void Jump()
     {
         // reset y velocity so jump height stays constant
@@ -141,8 +153,39 @@ public class PlayerMovement : MonoBehaviour
         rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
     }
     private void ResetJump()
-    {
+    { 
         readyToJump = true;
-        canJump = true;
+        StopJumpCoroutine();
+    }
+    // stops coroutine
+    void StopJumpCoroutine()
+    {
+        if (jumpCDCoroutine != null)
+        {
+            StopCoroutine(jumpCDCoroutine);
+            jumpCDCoroutine = null;
+        }
+    }
+    IEnumerator JumpCD()
+    {
+        Debug.Log("start cooldown");
+
+        yield return new WaitForSeconds(jumpCooldown);
+
+        ResetJump();
+
+        yield break;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        grounded = collision.gameObject.GetComponent<Ground>();
+    }
+    private void OnCollisionExit(Collision collision) 
+    {
+        if (collision.gameObject.GetComponent<Ground>() != null)
+        {
+            grounded = false;
+        }
     }
 }
