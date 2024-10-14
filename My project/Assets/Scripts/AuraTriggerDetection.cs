@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using static PlayerActions;
 
 public class AuraTriggerDetection : MonoBehaviour
@@ -8,6 +9,8 @@ public class AuraTriggerDetection : MonoBehaviour
     public bool hitWhileParry;
 
     public EnemyAI currentEnemy;
+
+    public UnityEvent OnAttackPerformed;
 
     // Start is called before the first frame update
     void Start()
@@ -23,11 +26,17 @@ public class AuraTriggerDetection : MonoBehaviour
 
     private void OnTriggerEnter(Collider collision)
     {
-            if (collision.gameObject.GetComponent<EnemyAI>() != null)
+        if (collision.gameObject.GetComponent<EnemyAI>() != null)
+        {
+            EnemyAI enemy = collision.gameObject.GetComponent<EnemyAI>();
+
+            EnemyHealth health;
+            if (health = enemy.GetComponent<EnemyHealth>()) 
             {
-                hitWhileParry = true;
-                EnemyAI enemy = collision.gameObject.GetComponent<EnemyAI>();
-                currentEnemy = enemy;
+                health.GetHit(1, this.gameObject.GetComponent<AuraTriggerDetection>());
             }
+
+            hitWhileParry = true;
+        }
     }
 }

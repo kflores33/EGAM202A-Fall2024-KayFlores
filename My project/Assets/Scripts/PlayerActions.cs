@@ -12,6 +12,8 @@ public class PlayerActions : MonoBehaviour
     }
     public ActionStates currentState;
 
+    public CooldownUI cooldownUI;
+
     [Header("Keybinds")]
     public KeyCode parryKey = KeyCode.Mouse0;
     public KeyCode launchKey = KeyCode.Mouse1;
@@ -59,13 +61,25 @@ public class PlayerActions : MonoBehaviour
             case ActionStates.Launch:
                 UpdateLaunch(); break;
         }
+
+
+        if (canParry)
+        {
+            cooldownUI.UseParry();
+        }
+        if (cooldownUI.isCooldown)
+        {
+            cooldownUI.ApplyCooldown();
+        }
     }
 
     void UpdateDefault()
     {
         // switch to parry state when parry button is pressed (and if cooldown is at 0)
         if (Input.GetKey(parryKey) && canParry) 
-        {
+        {        
+            cooldownUI.UseParry();
+
             currentState = ActionStates.Parry;
         }
         // switch to launch state if button is pressed
@@ -115,11 +129,6 @@ public class PlayerActions : MonoBehaviour
             StopCoroutine(parryActiveCoroutine);
             parryActiveCoroutine = null;
         }
-        if (knockbackAllowance != null)
-        {
-            StopCoroutine(knockbackAllowance);
-            knockbackAllowance = null;  
-        }
 
         // return to default state
         currentState = ActionStates.Default;
@@ -146,12 +155,8 @@ public class PlayerActions : MonoBehaviour
 
     void ParrySuccess()
     {
-        if(parryAura.currentEnemy != null)
-        {
-            Knockback(parryAura.currentEnemy);
-
-            DisableParry();
-        }
+        parryAura.hitWhileParry = false;
+        DisableParry();
     }
 
     // starts cooldown
@@ -171,34 +176,6 @@ public class PlayerActions : MonoBehaviour
         yield return new WaitForSeconds(parryDuration);
 
         DisableParry();        
-
-        yield break;
-    }
-
-    void Knockback(EnemyAI enemy)
-    {
-        enemy.GetComponent<Rigidbody>().isKinematic = false;
-
-        // calculates the direction the enemy is in in relation to player
-        Vector3 direction = (transform.position - enemy.transform.position).normalized;
-
-        // adds knockback
-        enemy.GetComponent<Rigidbody>().AddForce(direction * enemyKnockback, ForceMode.Impulse);
-
-        if (knockbackAllowance == null)
-        {
-            knockbackAllowance = StartCoroutine(waitToResetRb(enemy));
-        }
-
-        Debug.Log("bababaBOOM");
-    }
-
-    IEnumerator waitToResetRb(EnemyAI enemy)
-    {
-        yield return new WaitForSeconds(3);
-
-        enemy.GetComponent<Rigidbody>().isKinematic = true;
-        parryAura.currentEnemy = null;
 
         yield break;
     }
