@@ -104,18 +104,13 @@ public class PlayerMovement : MonoBehaviour
         {
             readyToJump = false;
             canJump = true;
-            // allows for continuous jumping if jump key is held down
-            //Invoke(nameof(ResetJump), jumpCooldown);
         }
-        // * need to get the input to be relative to the direction the camera is facing
     }
 
     private void MovePlayer()
     {
         // calculate movement direction (makes movement follow camera direction)
         moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
-
-        // * Vector3.forward converts quaternion (rotation) into a direction
 
         // actually move the player (while on ground)
         if (grounded)

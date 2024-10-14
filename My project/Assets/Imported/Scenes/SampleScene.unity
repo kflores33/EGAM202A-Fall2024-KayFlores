@@ -2157,7 +2157,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
@@ -3811,6 +3811,8 @@ MonoBehaviour:
   knockbackRadius: 10
   parryAura: {fileID: 276128029}
   canLaunch: 0
+  launchCharges: 0
+  playerLaunchForce: 0
 --- !u!4 &1791609339 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1686768238064405242, guid: e5eb11517a31d1d4eb565208f4010d3d,

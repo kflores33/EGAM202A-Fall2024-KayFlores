@@ -30,12 +30,4 @@ public class AuraTriggerDetection : MonoBehaviour
                 currentEnemy = enemy;
             }
     }
-    private void OnTriggerExit(Collider exit)
-    {
-        if (exit.gameObject.GetComponent<EnemyAI>() != null)
-        {
-            hitWhileParry = false;
-            currentEnemy = null;
-        }
-    }
 }

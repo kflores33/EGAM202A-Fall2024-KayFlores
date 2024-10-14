@@ -25,6 +25,8 @@ public class PlayerActions : MonoBehaviour
     public float enemyKnockback = 5f;
     public float knockbackRadius = 10f;
 
+    public Coroutine knockbackAllowance;
+
     public Coroutine parryCooldownCoroutine;
     public Coroutine parryActiveCoroutine;
 
@@ -32,6 +34,10 @@ public class PlayerActions : MonoBehaviour
 
     [Header("Launch Variables")]
     public bool canLaunch;
+
+    public int launchCharges = 0;
+
+    public float playerLaunchForce;
 
     // Start is called before the first frame update
     void Start()
@@ -92,12 +98,16 @@ public class PlayerActions : MonoBehaviour
 
         parryAura.gameObject.SetActive(true);
 
-        parryActiveCoroutine = StartCoroutine(ParryActiveCoroutine());
+        if (parryActiveCoroutine == null)
+        {
+            parryActiveCoroutine = StartCoroutine(ParryActiveCoroutine());
+        }
     }
 
     // ends parry state and starts cooldown timer
     void DisableParry()
     {
+        Debug.Log("parry disabled");
         parryAura.gameObject.SetActive(false );
 
         if (parryActiveCoroutine != null)
@@ -105,17 +115,26 @@ public class PlayerActions : MonoBehaviour
             StopCoroutine(parryActiveCoroutine);
             parryActiveCoroutine = null;
         }
+        if (knockbackAllowance != null)
+        {
+            StopCoroutine(knockbackAllowance);
+            knockbackAllowance = null;  
+        }
 
         // return to default state
         currentState = ActionStates.Default;
 
         // start cooldown (move to after parry is finished executing)
-        parryCooldownCoroutine = StartCoroutine(ParryCooldownCoroutine());        
+        if (parryCooldownCoroutine == null)
+        {
+            parryCooldownCoroutine = StartCoroutine(ParryCooldownCoroutine());
+        }
     }
 
     // resets parry and ends cooldown coroutine
     void ResetParry()
     {
+        Debug.Log("parry enabled");
         canParry = true;    
 
         if (parryCooldownCoroutine != null)
@@ -129,14 +148,10 @@ public class PlayerActions : MonoBehaviour
     {
         if(parryAura.currentEnemy != null)
         {
-            Debug.Log("bababaBOOM");
-            parryAura.currentEnemy.GetComponent<Rigidbody>().AddExplosionForce(enemyKnockback, this.transform.position, knockbackRadius);
+            Knockback(parryAura.currentEnemy);
 
-            // reset aura script variables
-            parryAura.currentEnemy = null;
-            parryAura.hitWhileParry = false;
+            DisableParry();
         }
-        DisableParry();
     }
 
     // starts cooldown
@@ -144,8 +159,8 @@ public class PlayerActions : MonoBehaviour
     {
         yield return new WaitForSeconds(parryCooldown);
 
+        //Debug.Log("can parry again");
         ResetParry();        
-        Debug.Log("parry cooldown started");
 
         yield break;
     }
@@ -156,8 +171,35 @@ public class PlayerActions : MonoBehaviour
         yield return new WaitForSeconds(parryDuration);
 
         DisableParry();        
-        Debug.Log("can parry again");
 
-        yield break ;
+        yield break;
+    }
+
+    void Knockback(EnemyAI enemy)
+    {
+        enemy.GetComponent<Rigidbody>().isKinematic = false;
+
+        // calculates the direction the enemy is in in relation to player
+        Vector3 direction = (transform.position - enemy.transform.position).normalized;
+
+        // adds knockback
+        enemy.GetComponent<Rigidbody>().AddForce(direction * enemyKnockback, ForceMode.Impulse);
+
+        if (knockbackAllowance == null)
+        {
+            knockbackAllowance = StartCoroutine(waitToResetRb(enemy));
+        }
+
+        Debug.Log("bababaBOOM");
+    }
+
+    IEnumerator waitToResetRb(EnemyAI enemy)
+    {
+        yield return new WaitForSeconds(3);
+
+        enemy.GetComponent<Rigidbody>().isKinematic = true;
+        parryAura.currentEnemy = null;
+
+        yield break;
     }
 }
