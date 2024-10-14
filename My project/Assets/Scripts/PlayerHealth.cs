@@ -2,13 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour
 {
     // references this video: https://www.youtube.com/watch?v=I2Uo8eEmSFQ&list=PLcRSafycjWFcwCxOHnc83yA0p4Gzx0PTM&index=4&t=1s
 
     [SerializeField]
-    private int currentHealth, maxHealth;
+    public int currentHealth, maxHealth;
 
     public PlayerActions player;
 
@@ -16,6 +17,17 @@ public class PlayerHealth : MonoBehaviour
 
     [SerializeField]
     public bool isDead = false;
+
+    [Header("UI")]
+    public Slider healthBar;
+
+    private void Start()
+    {
+        healthBar.maxValue = maxHealth;
+        healthBar.minValue = 0;
+
+        healthBar.value = currentHealth;
+    }
 
     public void InitializeHealth(int healthValue)
     {
@@ -28,8 +40,9 @@ public class PlayerHealth : MonoBehaviour
         if (isDead) return;
 
         currentHealth -= amount;
+        healthBar.value = currentHealth;
 
-        if (currentHealth < 0)
+        if (currentHealth > 0)
         {
             OnHitWithReference?.Invoke(sender);
         }

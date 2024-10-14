@@ -62,11 +62,6 @@ public class PlayerActions : MonoBehaviour
                 UpdateLaunch(); break;
         }
 
-
-        if (canParry)
-        {
-            cooldownUI.UseParry();
-        }
         if (cooldownUI.isCooldown)
         {
             cooldownUI.ApplyCooldown();
@@ -78,8 +73,6 @@ public class PlayerActions : MonoBehaviour
         // switch to parry state when parry button is pressed (and if cooldown is at 0)
         if (Input.GetKey(parryKey) && canParry) 
         {        
-            cooldownUI.UseParry();
-
             currentState = ActionStates.Parry;
         }
         // switch to launch state if button is pressed
@@ -132,6 +125,8 @@ public class PlayerActions : MonoBehaviour
 
         // return to default state
         currentState = ActionStates.Default;
+
+        cooldownUI.UseParry();
 
         // start cooldown (move to after parry is finished executing)
         if (parryCooldownCoroutine == null)

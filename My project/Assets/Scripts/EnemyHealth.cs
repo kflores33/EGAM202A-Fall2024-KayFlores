@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class EnemyHealth : MonoBehaviour
 {
@@ -15,6 +16,17 @@ public class EnemyHealth : MonoBehaviour
     [SerializeField]
     public bool isDead = false;
 
+    [Header("UI")]
+    public Slider healthBar;
+    private void Start()
+    {
+
+        healthBar.maxValue = maxHealth;
+        healthBar.minValue = 0;
+
+        healthBar.value = currentHealth;
+    }
+
     public void InitializeHealth(int healthValue)
     {
         currentHealth = healthValue;
@@ -26,6 +38,7 @@ public class EnemyHealth : MonoBehaviour
         if (isDead) return;
 
         currentHealth -= amount;
+        healthBar.value = currentHealth;
 
         if (currentHealth > 0)
         {
