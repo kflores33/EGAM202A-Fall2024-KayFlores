@@ -404,10 +404,6 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4584342766572231052, guid: d0b5bef81c42cd847a682514b2ec5c45, type: 3}
-      propertyPath: m_Layer
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584342766572231052, guid: d0b5bef81c42cd847a682514b2ec5c45, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
@@ -452,16 +448,8 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1577182249}
     - target: {fileID: 7285359433881835649, guid: d0b5bef81c42cd847a682514b2ec5c45, type: 3}
-      propertyPath: m_Layer
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7285359433881835649, guid: d0b5bef81c42cd847a682514b2ec5c45, type: 3}
       propertyPath: m_IsActive
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7654904562022351318, guid: d0b5bef81c42cd847a682514b2ec5c45, type: 3}
-      propertyPath: m_Layer
-      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1719672647064202336, guid: d0b5bef81c42cd847a682514b2ec5c45, type: 3}
@@ -497,7 +485,7 @@ GameObject:
   - component: {fileID: 560789347}
   - component: {fileID: 560789346}
   - component: {fileID: 560789345}
-  m_Layer: 2
+  m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -612,7 +600,7 @@ GameObject:
   - component: {fileID: 786663256}
   - component: {fileID: 786663258}
   - component: {fileID: 786663257}
-  m_Layer: 2
+  m_Layer: 5
   m_Name: TryingToCarry
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -926,7 +914,7 @@ GameObject:
   - component: {fileID: 918305105}
   - component: {fileID: 918305104}
   - component: {fileID: 918305103}
-  m_Layer: 2
+  m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1458,7 +1446,7 @@ GameObject:
   - component: {fileID: 1167774894}
   - component: {fileID: 1167774896}
   - component: {fileID: 1167774895}
-  m_Layer: 2
+  m_Layer: 5
   m_Name: Carrying
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1764,7 +1752,7 @@ GameObject:
   - component: {fileID: 1653750004}
   - component: {fileID: 1653750006}
   - component: {fileID: 1653750005}
-  m_Layer: 2
+  m_Layer: 5
   m_Name: Carrying
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1898,7 +1886,7 @@ GameObject:
   - component: {fileID: 1697760371}
   - component: {fileID: 1697760373}
   - component: {fileID: 1697760372}
-  m_Layer: 2
+  m_Layer: 5
   m_Name: TryingToCarry
   m_TagString: Untagged
   m_Icon: {fileID: 0}
