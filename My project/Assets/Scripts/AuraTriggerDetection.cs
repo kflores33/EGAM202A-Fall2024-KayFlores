@@ -12,6 +12,8 @@ public class AuraTriggerDetection : MonoBehaviour
 
     public UnityEvent OnAttackPerformed;
 
+    public  List<EnemyHealth> enemies = new List<EnemyHealth>();
+
     // Start is called before the first frame update
     void Start()
     {
@@ -26,16 +28,20 @@ public class AuraTriggerDetection : MonoBehaviour
 
     private void OnTriggerEnter(Collider collision)
     {
-        if (collision.gameObject.GetComponent<EnemyAI>() != null)
+        if (collision.gameObject.GetComponent<EnemyHealth>() != null)
         {
-            EnemyAI enemy = collision.gameObject.GetComponent<EnemyAI>();
+            EnemyHealth health = collision.gameObject.GetComponent<EnemyHealth>();
 
-            EnemyHealth health;
-            if (health = enemy.GetComponent<EnemyHealth>()) 
+            enemies.Add(health);
+
+            foreach (EnemyHealth enemy in enemies)
             {
-                health.GetHit(1, this.gameObject.GetComponent<AuraTriggerDetection>());
+                enemy.GetHit(1, this.gameObject.GetComponent<AuraTriggerDetection>());
+
+                break;
             }
 
+            OnAttackPerformed?.Invoke();
             hitWhileParry = true;
         }
     }

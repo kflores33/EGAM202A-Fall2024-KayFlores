@@ -7,8 +7,7 @@ public class PlayerActions : MonoBehaviour
     public enum ActionStates
     {
         Default,
-        Parry,
-        Launch
+        Parry
     }
     public ActionStates currentState;
 
@@ -34,13 +33,6 @@ public class PlayerActions : MonoBehaviour
 
     public AuraTriggerDetection parryAura;
 
-    [Header("Launch Variables")]
-    public bool canLaunch;
-
-    public int launchCharges = 0;
-
-    public float playerLaunchForce;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -58,8 +50,6 @@ public class PlayerActions : MonoBehaviour
                 UpdateDefault(); break;
             case ActionStates.Parry:
                 UpdateParry(); break;
-            case ActionStates.Launch:
-                UpdateLaunch(); break;
         }
 
         if (cooldownUI.isCooldown)
@@ -75,11 +65,6 @@ public class PlayerActions : MonoBehaviour
         {        
             currentState = ActionStates.Parry;
         }
-        // switch to launch state if button is pressed
-        if (Input.GetKey(launchKey) && canLaunch)
-        {
-
-        }
     }
     void UpdateParry()
     {
@@ -91,11 +76,6 @@ public class PlayerActions : MonoBehaviour
         {
             ParrySuccess();
         }
-    }
-    void UpdateLaunch()
-    {
-        // make player invulnerable to damage and add force in the direction the player is facing
-        // subtract from number of launch charges available
     }
 
     // starts the parry state & duration timer
@@ -147,10 +127,11 @@ public class PlayerActions : MonoBehaviour
             parryCooldownCoroutine = null;
         }        
     }
-
+    // clears the aura variables and disables parry upon success
     void ParrySuccess()
     {
         parryAura.hitWhileParry = false;
+        parryAura.enemies.Clear();
         DisableParry();
     }
 
