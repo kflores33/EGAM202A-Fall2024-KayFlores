@@ -30,13 +30,6 @@ public class ProjectileEnemyAi : MonoBehaviour
     public float pathUpdateDelay = 0.2f;
     private float pathUpdateDeadline;
 
-    [Header("Walkpoint Variables")]
-    public Vector3 walkPoint;
-    bool walkPointSet;
-
-    public float minWalkPointRange;
-    public float maxWalkPointRange;
-
     // create state machine
     public enum EnemyStates
     {

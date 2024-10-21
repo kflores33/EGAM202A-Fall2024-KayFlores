@@ -9,8 +9,11 @@ public class AuraTriggerDetection : MonoBehaviour
     public bool hitWhileParry;
 
     public EnemyAI currentEnemy;
+    public Transform player;
 
     public UnityEvent OnAttackPerformed;
+
+    public float projectileDeflectSpeed;
 
     public  List<EnemyHealth> enemies = new List<EnemyHealth>();
 
@@ -43,6 +46,26 @@ public class AuraTriggerDetection : MonoBehaviour
 
             OnAttackPerformed?.Invoke();
             hitWhileParry = true;
+        }
+        // handles projectile deflection
+        if (collision.gameObject.GetComponent<ProjectileScript>() != null) 
+        { 
+            ProjectileScript projectile = collision.gameObject.GetComponent<ProjectileScript>();
+
+            Vector3 direction = ((projectile.transform.position + projectile.transform.forward) - projectile.transform.position).normalized;
+
+            // reflects direction of player's vector3
+            Vector3 reflected = Vector3.Reflect(direction, player.transform.forward);
+
+            // does the actual reflecting
+            projectile.DeflectProjectile(reflected, this);
+
+            // after projectile is reflected,
+            if (projectile.hasBeenDeflected)
+            {
+                OnAttackPerformed?.Invoke();
+                hitWhileParry = true;
+            }
         }
     }
 }

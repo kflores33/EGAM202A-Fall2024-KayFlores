@@ -131,7 +131,12 @@ public class PlayerActions : MonoBehaviour
     void ParrySuccess()
     {
         parryAura.hitWhileParry = false;
-        parryAura.enemies.Clear();
+
+        if (parryAura.enemies.Count > 0)
+        {
+            parryAura.enemies.Clear();
+        }
+
         DisableParry();
     }
 
