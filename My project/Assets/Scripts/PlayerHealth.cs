@@ -13,7 +13,7 @@ public class PlayerHealth : MonoBehaviour
 
     public PlayerActions player;
 
-    public UnityEvent<EnemyAI> OnHitWithReference, OnDeathWithReference;
+    public UnityEvent<GameObject> OnHitWithReference, OnDeathWithReference;
 
     [SerializeField]
     public bool isDead = false;
@@ -35,7 +35,7 @@ public class PlayerHealth : MonoBehaviour
         maxHealth = healthValue;
         isDead = false;
     }
-    public void GetHit(int amount, EnemyAI sender)
+    public void GetHit(int amount, GameObject sender)
     {
         if (isDead) return;
 
@@ -55,13 +55,26 @@ public class PlayerHealth : MonoBehaviour
 
     private void OnTriggerEnter(Collider col)
     {
-        EnemyAI enemy = col.gameObject.GetComponent<EnemyAI>();
+        EnemyHealth enemy = col.gameObject.GetComponent<EnemyHealth>();
+        ProjectileScript projectile = col.gameObject.GetComponent<ProjectileScript>();
 
         if (enemy != null)
         {
             if (player.currentState != PlayerActions.ActionStates.Parry)
             {
-                GetHit(1, enemy);
+                GetHit(1, enemy.gameObject);
+            }
+        }
+        if (projectile != null) 
+        {
+            if (projectile.canDamageEnemy)
+            {
+                return;
+            }
+            else
+            {
+                GetHit(1, projectile.gameObject);
+                Destroy(projectile.gameObject);
             }
         }
     }

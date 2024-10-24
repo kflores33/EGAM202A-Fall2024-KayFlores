@@ -6,6 +6,8 @@ using static PlayerActions;
 
 public class AuraTriggerDetection : MonoBehaviour
 {
+    // referenced this video: https://www.youtube.com/watch?v=LTegHf579no
+
     public bool hitWhileParry;
 
     public EnemyAI currentEnemy;
@@ -17,32 +19,23 @@ public class AuraTriggerDetection : MonoBehaviour
 
     public  List<EnemyHealth> enemies = new List<EnemyHealth>();
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     private void OnTriggerEnter(Collider collision)
     {
         if (collision.gameObject.GetComponent<EnemyHealth>() != null)
         {
             EnemyHealth health = collision.gameObject.GetComponent<EnemyHealth>();
 
-            enemies.Add(health);
+            //enemies.Add(health);
 
-            foreach (EnemyHealth enemy in enemies)
-            {
-                enemy.GetHit(1, this.gameObject.GetComponent<AuraTriggerDetection>());
+            //foreach (EnemyHealth enemy in enemies)
+            //{
+            //    enemy.GetHit(1, this.gameObject);
+            //    OnAttackPerformed?.Invoke();
 
-                break;
-            }
+            //    break;
+            //}
+
+            health.GetHit(1, this.gameObject);
 
             OnAttackPerformed?.Invoke();
             hitWhileParry = true;

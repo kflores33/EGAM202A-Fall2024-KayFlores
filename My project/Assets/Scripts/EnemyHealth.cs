@@ -11,7 +11,7 @@ public class EnemyHealth : MonoBehaviour
     [SerializeField]
     private int currentHealth, maxHealth;
 
-    public UnityEvent<AuraTriggerDetection> OnHitWithReference, OnDeathWithReference;
+    public UnityEvent<GameObject> OnHitWithReference, OnDeathWithReference;
 
     [SerializeField]
     public bool isDead = false;
@@ -33,7 +33,7 @@ public class EnemyHealth : MonoBehaviour
         maxHealth = healthValue;
         isDead = false;
     }
-    public void GetHit(int amount, AuraTriggerDetection sender)
+    public void GetHit(int amount, GameObject sender)
     {
         if (isDead) return;
 
