@@ -133,6 +133,7 @@ MonoBehaviour:
   thisTransform: {fileID: 0}
   player: {fileID: 0}
   slider: {fileID: 6073865700081798370}
+  manager: {fileID: 0}
   minTime: 1
   maxTime: 7
   speed: 12
@@ -161,7 +162,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.56
+  m_Radius: 0.77
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &7938942723855921520
 PrefabInstance:

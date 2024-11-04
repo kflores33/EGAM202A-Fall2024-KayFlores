@@ -13,11 +13,24 @@ public class FishingRod : MonoBehaviour
     public Vector3 lineOrigin;
     public Vector3 lineEnd;
 
+    public int pointCount = 10;
+
+    // have length determine curve strength (inverse relationship)
+    public float minCurveStrength;
+    public float maxCurveStrength;
+
+    public float minDistance;
+    public float maxDistance;
+
+    public AnimationCurve lineCurve;
+
     // Start is called before the first frame update
     void Start()
     {
         lineRenderer = GetComponent<LineRenderer>();
         playerStates = GetComponentInParent<PlayerStates>();
+
+        lineRenderer.positionCount = pointCount +1 ;
     }
 
     // Update is called once per frame
@@ -59,6 +72,8 @@ public class FishingRod : MonoBehaviour
                     SetLineEndPoint(endPoint);
                 }
             }
+
+            
         }
     }
 
@@ -69,12 +84,38 @@ public class FishingRod : MonoBehaviour
     }
     void SetLineEndPoint(Vector3 endPoint) 
     { 
-        lineEnd = endPoint;
-        lineRenderer.SetPosition(1, lineEnd);
+        lineEnd = endPoint ;
+        lineRenderer.SetPosition(10, lineEnd);
+        LineCurve(lineOrigin, lineEnd);
     }
 
     void TiltFishingRod()
     {
         // stuff that dictated the rotation(?) of the fishing rod depending on mouse position
+    }
+
+    void LineCurve(Vector3 start, Vector3 end)
+    {
+        Vector3 delta = end - start;
+        float distance = delta.magnitude;   
+
+        // the smaller the distance, the stronger the curve
+        float distanceInterp = (distance - minDistance) / maxDistance;
+        float curveStrength = Mathf.Lerp(minCurveStrength, maxCurveStrength, distanceInterp);
+
+        for (int i = 0; i <= pointCount; i++)
+        {
+            // create interp float variable
+            float interp = i / ((float)pointCount);
+
+            Vector3 position = Vector3.Lerp(start, end, interp);
+
+            float curveValue = lineCurve.Evaluate(interp);
+            curveValue *= curveStrength;
+
+            position.y -= curveValue;
+
+            lineRenderer.SetPosition(i, position);
+        }
     }
 }

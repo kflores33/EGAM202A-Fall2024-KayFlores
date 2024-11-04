@@ -136,7 +136,7 @@ public class FishBehavior : MonoBehaviour
 
             if (t > 1) { t = 1; }
 
-            transform.position = Vector3.Lerp(startPos, newPosition, t);
+            transform.position = Vector3.Slerp(startPos, newPosition, t);
 
             if(Vector3.Distance(transform.position, newPosition) <= 0.5f)
             {
