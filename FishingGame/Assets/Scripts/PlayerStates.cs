@@ -13,14 +13,17 @@ public class PlayerStates : MonoBehaviour
     }
     public PlayerStateMachine currentState;
 
+    [Header("Inputs")]
     public KeyCode castLine;
     public KeyCode reelIn;
 
+    [Header("X position of cursor")]
     public float mouseX;
-    public float mouseY;
+    //public float mouseY; // y is not important
 
+    [Header("misc")]
     public bool isFishing;
-    public Vector2 lastClickLocation;
+    public Vector3 lastClickLocation;
 
     // references
     private FishingBehavior fishingBehaviorScript;
@@ -62,17 +65,7 @@ public class PlayerStates : MonoBehaviour
     {
         if (Input.GetKeyDown(reelIn))
         {
-            if (currentFish != null)
-            {
-                Debug.Log("fish detected!");
-                currentState = PlayerStateMachine.FishingActive;
-            }
-            else 
-            {
-                Debug.Log("no fish; return to not fishing");
-                isFishing = false;
-                currentState = PlayerStateMachine.NotFishing; 
-            }
+            CheckForFish();
         }
     }
     void UpdateFishingActive()
@@ -92,8 +85,7 @@ public class PlayerStates : MonoBehaviour
 
             if (water != null)
             {
-                // need to convert to vector3 i think cause the fish spawns in fuckin narnia (maybe make it relative to the clicked object?
-                lastClickLocation = mousePosition;
+                lastClickLocation = hitInfo.point;
 
                 isFishing = true;
                 Debug.Log("switch to fishing idle");
@@ -108,12 +100,35 @@ public class PlayerStates : MonoBehaviour
 
     void CheckForFish()
     {
-        // if there is a fish, switch to fishingactive, else switch back to idle
+        // defines current fish 
+        if (GameObject.FindObjectOfType<FishBehavior>() != null)
+        {
+            currentFish = FindObjectOfType<FishBehavior>().gameObject;
+        }
+        else
+        {
+            currentFish = null;
+        }
 
+        // if there is a fish, switch to fishingactive, else switch back to idle
+        if (currentFish != null)
+        {
+            Debug.Log("fish detected!");
+            currentState = PlayerStateMachine.FishingActive;
+        }
+        else 
+        {
+            Debug.Log("no fish; return to not fishing");
+            isFishing = false;
+            currentState = PlayerStateMachine.NotFishing; 
+        }
     }
 
-    void GetMousePosition()
+    void GetMousePositionActive()
     {
+        Vector2 mousePosition = Input.mousePosition;
+        //Ray mouseRay = gameCamera.ScreenPointToRay(mousePosition);
 
+        mouseX = mousePosition.x; // make sure to set this back to 0 when fishing active state is over
     }
 }
