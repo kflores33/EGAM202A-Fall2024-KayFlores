@@ -46,14 +46,16 @@ public class CursorScript : MonoBehaviour
         Ray ray = new Ray(pos, dir * 20);
         Debug.DrawRay(pos, dir * 20, Color.red);
         // check if fish is hit
-        if (Physics.Raycast(ray, out RaycastHit hit, 100))
+        if (Physics.Raycast(ray, out RaycastHit hit))
         {
-            FishBehavior fish = hit.transform.GetComponent<FishBehavior>();
+            FishBehavior fish = hit.collider.GetComponent<FishBehavior>();
 
             if (fish != null)
             {
-                Debug.Log("fish hit!!!!!!!!");
+                //Debug.Log("fish hit!!!!!!!!");
+                player.fishHit = true;
             }
+            else { player.fishHit = false; }
         }
     }
 }

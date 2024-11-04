@@ -9,8 +9,14 @@ public class FishSpawner : MonoBehaviour
     public float minTime;
     public float maxTime;
 
+    public float minHealth = 20;
+    public float maxHealth = 30;
+
+    public float speed = 10;
+
     public PlayerStates playerStates;
     public GameObject fish;
+    public GeneralGameManager GeneralGameManager;
 
     Coroutine spawnFishCoroutine;
 
@@ -54,9 +60,16 @@ public class FishSpawner : MonoBehaviour
             fishScript.minTime = Random.Range(1, 4);
             fishScript.maxTime = Random.Range(5, 10);
             // give random distance values
-            fishScript.minDistance = Random.Range(1, 3);
-            fishScript.maxDistance = Random.Range(4, 7);
+            fishScript.minDistance = Random.Range(1, 4);
+            fishScript.maxDistance = Random.Range(6, 10);
+
+            fishScript.manager = GeneralGameManager;
+
+            fishScript.speed = speed;
+
+            //fishScript.healthValue = Random.Range(minHealth,maxHealth);
         }
+
         Debug.Log("spawn fish");
         GameObject newFish = Instantiate(fish);
         newFish.transform.position = playerStates.lastClickLocation; // change this to be position of click

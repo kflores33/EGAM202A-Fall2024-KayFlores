@@ -24,9 +24,9 @@ public class PlayerStates : MonoBehaviour
 
     [Header("misc")]
     public bool isFishing;
+    public bool fishHit;
+    public float damage = 0.5f;
     public Vector3 lastClickLocation;
-
-
 
     // references
     private FishingBehavior fishingBehaviorScript;
@@ -76,6 +76,20 @@ public class PlayerStates : MonoBehaviour
     void UpdateFishingActive()
     {
         cursor.CheckCursorAngle();
+
+        // if the fish has been hit, deal damage
+        if (fishHit == true && currentFish != null)
+        {
+            //Debug.Log("hit fish");
+            currentFish.GetComponent<FishBehavior>().GetHit(damage);
+        }
+
+        // if there is no fish in the scene, do shit on fish caught
+        if (currentFish == null)
+        {
+            //Debug.Log("fish caught!");
+            currentState = PlayerStateMachine.NotFishing;
+        }
     }
 
     void GetMousePositionOnClick()
