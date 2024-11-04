@@ -151,10 +151,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   thisTransform: {fileID: 0}
-  playerTransform: {fileID: 0}
+  player: {fileID: 0}
   minTime: 0
   maxTime: 0
   speed: 0
   minDistance: 2
   maxDistance: 7
-  targetPos: {fileID: 0}
+  health: 0
+  targetPos: {x: 0, y: 0, z: 0}

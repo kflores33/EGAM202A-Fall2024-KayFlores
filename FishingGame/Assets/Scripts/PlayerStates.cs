@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class PlayerStates : MonoBehaviour
 {
+    // this script handles player states & behaviors
     public enum PlayerStateMachine
     {
         NotFishing, // nothing planned for this yet other than just "cast the fishing line"
@@ -25,16 +26,20 @@ public class PlayerStates : MonoBehaviour
     public bool isFishing;
     public Vector3 lastClickLocation;
 
+
+
     // references
     private FishingBehavior fishingBehaviorScript;
     private Camera gameCamera;
     public GameObject currentFish;
+    public CursorScript cursor;
 
     // Start is called before the first frame update
     void Start()
     {
         fishingBehaviorScript = GetComponentInChildren<FishingBehavior>();
         gameCamera = Camera.main;
+        cursor = FindObjectOfType<CursorScript>();
     }
 
     // Update is called once per frame
@@ -70,7 +75,7 @@ public class PlayerStates : MonoBehaviour
     }
     void UpdateFishingActive()
     {
-
+        cursor.CheckCursorAngle();
     }
 
     void GetMousePositionOnClick()
@@ -122,13 +127,5 @@ public class PlayerStates : MonoBehaviour
             isFishing = false;
             currentState = PlayerStateMachine.NotFishing; 
         }
-    }
-
-    void GetMousePositionActive()
-    {
-        Vector2 mousePosition = Input.mousePosition;
-        //Ray mouseRay = gameCamera.ScreenPointToRay(mousePosition);
-
-        mouseX = mousePosition.x; // make sure to set this back to 0 when fishing active state is over
     }
 }

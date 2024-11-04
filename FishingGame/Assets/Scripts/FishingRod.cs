@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class FishingRod : MonoBehaviour
 {
+    // this script is in charge of handling visual indicators associated with the fishing rod
+
     LineRenderer lineRenderer;
     PlayerStates playerStates;
     public Transform lineOriginReference;
@@ -25,6 +27,8 @@ public class FishingRod : MonoBehaviour
         if (playerStates.currentState != PlayerStates.PlayerStateMachine.NotFishing)
         {
             lineRenderer.enabled = true;
+
+            // allow for rod to move based on mouse position
         }
         else
         {
@@ -67,5 +71,10 @@ public class FishingRod : MonoBehaviour
     { 
         lineEnd = endPoint;
         lineRenderer.SetPosition(1, lineEnd);
+    }
+
+    void TiltFishingRod()
+    {
+        // stuff that dictated the rotation(?) of the fishing rod depending on mouse position
     }
 }

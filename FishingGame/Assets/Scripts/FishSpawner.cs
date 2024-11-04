@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class FishSpawner : MonoBehaviour
 {
+    // this script handles how to spawn fish (go figure)
+
     public float minTime;
     public float maxTime;
 
@@ -30,7 +32,12 @@ public class FishSpawner : MonoBehaviour
         }
         else
         {
-            StopAllCoroutines();
+            if (spawnFishCoroutine != null) 
+            {            
+                StopCoroutine(spawnFishCoroutine);
+                spawnFishCoroutine = null; 
+            }
+
         }
     }
 

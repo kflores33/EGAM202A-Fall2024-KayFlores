@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class FishBehavior : MonoBehaviour
 {
+    //this script handles the instantiated fishs' behavior
+
     public Transform thisTransform;
     public PlayerStates player;
 
@@ -14,6 +16,8 @@ public class FishBehavior : MonoBehaviour
 
     public float minDistance;
     public float maxDistance;
+
+    public float health;
 
     public Vector3 targetPos;
 
@@ -33,7 +37,7 @@ public class FishBehavior : MonoBehaviour
         // stop disappear coroutine if player clicked reel in and start movement coroutine
         if (player.currentState == PlayerStates.PlayerStateMachine.FishingActive)
         {
-            StopCoroutine(selfDestruct);
+            if (selfDestruct != null) StopCoroutine(selfDestruct);
 
             // probably have some coroutine that repeats itself
             if (moveBehavior == null) 
@@ -41,6 +45,12 @@ public class FishBehavior : MonoBehaviour
                 moveBehavior = StartCoroutine(MoveBehavior());
             }
         }
+
+        // draw ray to show angle
+        Vector3 pos = transform.position;
+        Vector3 dir = (player.transform.position - transform.position).normalized;
+        Debug.DrawRay(pos, dir * 25, Color.blue);
+
     }        
     IEnumerator SelfDestructTimer()
     {
