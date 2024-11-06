@@ -28,6 +28,7 @@ public class FishBehavior : MonoBehaviour
     bool isDead;
 
     public Vector3 targetPos;
+    public Vector3 boxSize;
 
     Coroutine reInitiateSelfDestruct;
     Coroutine selfDestruct;
@@ -62,15 +63,15 @@ public class FishBehavior : MonoBehaviour
             if (selfDestruct != null) StopCoroutine(selfDestruct);
 
             // probably have some coroutine that repeats itself
-            if (moveBehavior == null) 
+            if (moveBehavior == null)
             {
                 slider.enabled = true;
                 moveBehavior = StartCoroutine(MoveBehavior());
             }
 
-            if (moveBehaviorComplete) 
-            { 
-                StopCoroutine(moveBehavior); 
+            if (moveBehaviorComplete)
+            {
+                StopCoroutine(moveBehavior);
                 moveBehavior = null;
 
                 moveBehavior = StartCoroutine(MoveBehavior());
@@ -98,6 +99,7 @@ public class FishBehavior : MonoBehaviour
 
         // attempt to find new location to move to
         Vector3 startPos = transform.position;  
+
         Vector3 newPosition = Vector3.zero;
 
         int attempts = 100;
@@ -106,19 +108,25 @@ public class FishBehavior : MonoBehaviour
         while (isNotWater) 
         {
             Vector3 offset = Vector3.zero;
-            offset.x = Random.Range(minDistance, maxDistance);
+            offset.x = Random.Range(-targetPos.x, targetPos.x);
             offset.y = 0;
-            offset.z = Random.Range(minDistance,maxDistance);
+            offset.z = Random.Range(-1, 1);
 
-            newPosition = offset;
+            newPosition = startPos + offset;
 
-            Ray ray = new Ray(newPosition, Vector3.zero);
+            //Ray ray = new Ray(newPosition, Vector3.zero);
 
-            if (Physics.Raycast(ray, out RaycastHit hit))
+            bool hitDetect = Physics.BoxCast(newPosition, boxSize, Vector3.zero, out RaycastHit hit, Quaternion.identity, 0);
+
+            if (hitDetect)
             {
                 if (hit.collider.GetComponent<Water>() != null)
                 {
                     isNotWater = false;
+                }
+                else
+                {
+                    isNotWater = true;
                 }
             }
 

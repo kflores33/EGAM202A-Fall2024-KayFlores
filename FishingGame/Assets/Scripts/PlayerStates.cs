@@ -88,6 +88,7 @@ public class PlayerStates : MonoBehaviour
         if (currentFish == null)
         {
             //Debug.Log("fish caught!");
+            fishHit = false;    
             currentState = PlayerStateMachine.NotFishing;
         }
     }

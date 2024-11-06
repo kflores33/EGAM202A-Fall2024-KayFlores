@@ -40,7 +40,8 @@ public class CursorScript : MonoBehaviour
 
         // variables for ray
         Vector3 pos = transform.position;
-        Vector3 dir = (player.transform.position - pos).normalized;
+        Vector3 dir = (player.transform.position - pos).normalized; // should probably make sure the y is equal to zero 
+        dir.y = 0;
 
         // raycast
         Ray ray = new Ray(pos, dir * 20);
