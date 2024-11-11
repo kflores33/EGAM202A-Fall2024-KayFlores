@@ -12,6 +12,7 @@ public class FishBehavior : MonoBehaviour
     public PlayerStates player;
     public Slider slider;
     public GeneralGameManager manager;
+    public GameObject struggleParticles;
 
     public float minTime;
     public float maxTime;
@@ -50,8 +51,10 @@ public class FishBehavior : MonoBehaviour
 
         slider.enabled = false;
 
+        struggleParticles.SetActive(false);
         // start the disappear coroutine
         selfDestruct = StartCoroutine(SelfDestructTimer());
+
     }
 
     // Update is called once per frame
@@ -61,6 +64,9 @@ public class FishBehavior : MonoBehaviour
         if (player.currentState == PlayerStates.PlayerStateMachine.FishingActive)
         {
             if (selfDestruct != null) StopCoroutine(selfDestruct);
+
+            if (!struggleParticles.GetComponent<ParticleSystem>().isPlaying) { struggleParticles.GetComponent<ParticleSystem>().Play(); }
+            if (!struggleParticles.activeInHierarchy) { struggleParticles.SetActive(true); }
 
             // probably have some coroutine that repeats itself
             if (moveBehavior == null)
