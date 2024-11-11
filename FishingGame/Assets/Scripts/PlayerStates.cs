@@ -31,8 +31,11 @@ public class PlayerStates : MonoBehaviour
     // references
     private FishingBehavior fishingBehaviorScript;
     private Camera gameCamera;
+
+    [Header("References")]
     public GameObject currentFish;
     public CursorScript cursor;
+    public Animator animator;
 
     // Start is called before the first frame update
     void Start()
@@ -40,6 +43,7 @@ public class PlayerStates : MonoBehaviour
         fishingBehaviorScript = GetComponentInChildren<FishingBehavior>();
         gameCamera = Camera.main;
         cursor = FindObjectOfType<CursorScript>();
+        animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -88,7 +92,9 @@ public class PlayerStates : MonoBehaviour
         if (currentFish == null)
         {
             //Debug.Log("fish caught!");
-            fishHit = false;    
+            fishHit = false;
+
+            animator.SetTrigger("ExitFishing");
             currentState = PlayerStateMachine.NotFishing;
         }
     }
@@ -109,6 +115,8 @@ public class PlayerStates : MonoBehaviour
 
                 isFishing = true;
                 Debug.Log("switch to fishing idle");
+
+                animator.SetTrigger("EnterFishing");
                 currentState = PlayerStateMachine.FishingIdle;
             }
             else
@@ -134,12 +142,16 @@ public class PlayerStates : MonoBehaviour
         if (currentFish != null)
         {
             Debug.Log("fish detected!");
+
+            animator.SetTrigger("FishActive");
             currentState = PlayerStateMachine.FishingActive;
         }
         else 
         {
             Debug.Log("no fish; return to not fishing");
             isFishing = false;
+
+            animator.SetTrigger("ExitFishing");
             currentState = PlayerStateMachine.NotFishing; 
         }
     }
