@@ -11,6 +11,10 @@ public class FishData : ScriptableObject
     public float minTime;
     public float maxTime;
 
+    [Header("Distance Variables")]
+    public float minDistance;
+    public float maxDistance;
+
     [Header("Speed of Fish")] // the lower the value, the faster the fish is
     public float speed;
 

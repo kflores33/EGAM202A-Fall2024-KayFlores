@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minTime: 0.25
   maxTime: 2
-  speed: 0.2
+  minDistance: 6
+  maxDistance: 9
+  speed: 0.5
   healthValue: 35
   fishName: Rainbow Trout

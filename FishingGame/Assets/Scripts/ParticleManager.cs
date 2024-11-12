@@ -38,18 +38,23 @@ public class ParticleManager : MonoBehaviour
             struggleParticles.SetActive(false);
         }
 
-        if (player.currentState == PlayerStates.PlayerStateMachine.FishingIdle)
-        {
-            trail.transform.position = player.lastClickLocation;
-
-            SetParticlesActive(trail);
-        }
-        else if (player.currentState == PlayerStates.PlayerStateMachine.FishingActive)
+        // trail particles
+        if (player.currentState == PlayerStates.PlayerStateMachine.FishingActive)
         {
             if (fish != null)
             {
-                struggleParticles.transform.position = fish.transform.position;
+                trail.transform.position = fish.transform.position;
             }
+            else
+            {
+                trail.SetActive(false);
+            }
+
+            SetParticlesActive(trail);
+        }        
+        else if (player.currentState == PlayerStates.PlayerStateMachine.FishingIdle)
+        {
+            trail.transform.position = player.lastClickLocation;
 
             SetParticlesActive(trail);
         }

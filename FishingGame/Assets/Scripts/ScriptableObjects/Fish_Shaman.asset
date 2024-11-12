@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minTime: 0.5
   maxTime: 3
-  speed: 0.3
+  minDistance: 3
+  maxDistance: 5
+  speed: 1
   healthValue: 45
   fishName: Shaman Fish

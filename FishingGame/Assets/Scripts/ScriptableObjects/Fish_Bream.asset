@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minTime: 0.75
   maxTime: 4
-  speed: 0.4
+  minDistance: 4
+  maxDistance: 7
+  speed: 0.75
   healthValue: 70
   fishName: Bream

@@ -97,43 +97,50 @@ public class FishBehavior : MonoBehaviour
         // attempt to find new location to move to
         Vector3 startPos = transform.position;  
 
-        Vector3 newPosition = Vector3.zero;
+        #region Previous Attempt
+        //int attempts = 100;
 
-        int attempts = 100;
+        //bool isNotWater = true;
+        //while (isNotWater) 
+        //{
+        //    Vector3 offset = Vector3.zero;
+        //    offset.x = Random.Range(-targetPos.x, targetPos.x);
+        //    offset.y = 0;
+        //    offset.z = Random.Range(-1, 1);
 
-        bool isNotWater = true;
-        while (isNotWater) 
-        {
-            Vector3 offset = Vector3.zero;
-            offset.x = Random.Range(-targetPos.x, targetPos.x);
-            offset.y = 0;
-            offset.z = Random.Range(-1, 1);
+        //    newPosition = startPos + offset;
 
-            newPosition = startPos + offset;
+        //    //Ray ray = new Ray(newPosition, Vector3.zero);
 
-            //Ray ray = new Ray(newPosition, Vector3.zero);
+        //    bool hitDetect = Physics.BoxCast(newPosition, boxSize, Vector3.zero, out RaycastHit hit, Quaternion.identity, 0);
 
-            bool hitDetect = Physics.BoxCast(newPosition, boxSize, Vector3.zero, out RaycastHit hit, Quaternion.identity, 0);
+        //    if (hitDetect)
+        //    {
+        //        if (hit.collider.GetComponent<Water>() != null)
+        //        {
+        //            isNotWater = false;
+        //        }
+        //        else
+        //        {
+        //            isNotWater = true;
+        //        }
+        //    }
 
-            if (hitDetect)
-            {
-                if (hit.collider.GetComponent<Water>() != null)
-                {
-                    isNotWater = false;
-                }
-                else
-                {
-                    isNotWater = true;
-                }
-            }
+        //    attempts--;
+        //    if (attempts <= 0) 
+        //    {
+        //        break;
+        //    }
+        //}
+        #endregion
 
-            attempts--;
-            if (attempts <= 0) 
-            {
-                break;
-            }
-        }
+        // get new move direction (goes in the opposite direction of the current position)
+        Vector3 newDir = Vector3.Cross((startPos - player.transform.position).normalized, Vector3.up);
 
+        // (theoretically) moves the fish in the new direction multiplied by a random distance within range
+        Vector3 newPosition = Vector3.zero + (newDir * Random.Range(data.minDistance, data.maxDistance));
+
+        // lerp between positions (do not remove!!!)
         var t = 0f;
         while (t < 1)
         {

@@ -95,7 +95,17 @@ public class PlayerStates : MonoBehaviour
             fishHit = false;
 
             animator.SetTrigger("ExitFishing");
-            currentState = PlayerStateMachine.NotFishing;
+
+            // set fish caught screen active
+            FindObjectOfType<DisplayFishCaught>().GetComponent<DisplayFishCaught>().FishCaught(true);
+
+            // if the player clicks again, hide the fish caught screen and switch to not fishing state
+            if (Input.GetKeyDown(castLine) || Input.GetKeyDown(reelIn) )
+            {
+                currentState = PlayerStateMachine.NotFishing;
+
+                FindObjectOfType<DisplayFishCaught>().GetComponent<DisplayFishCaught>().FishCaught(false);
+            }
         }
     }
 
