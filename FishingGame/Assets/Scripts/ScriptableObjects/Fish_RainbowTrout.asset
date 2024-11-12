@@ -17,5 +17,5 @@ MonoBehaviour:
   minDistance: 6
   maxDistance: 9
   speed: 0.5
-  healthValue: 35
+  healthValue: 30
   fishName: Rainbow Trout

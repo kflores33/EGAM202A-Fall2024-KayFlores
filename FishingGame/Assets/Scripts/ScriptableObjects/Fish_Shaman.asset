@@ -17,5 +17,5 @@ MonoBehaviour:
   minDistance: 3
   maxDistance: 5
   speed: 1
-  healthValue: 45
+  healthValue: 20
   fishName: Shaman Fish

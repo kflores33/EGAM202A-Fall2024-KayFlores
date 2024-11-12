@@ -17,5 +17,5 @@ MonoBehaviour:
   minDistance: 4
   maxDistance: 7
   speed: 0.75
-  healthValue: 70
+  healthValue: 40
   fishName: Bream
