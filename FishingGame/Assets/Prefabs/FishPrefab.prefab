@@ -131,20 +131,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   thisTransform: {fileID: 0}
-  player: {fileID: 0}
   slider: {fileID: 6073865700081798370}
+  player: {fileID: 0}
   manager: {fileID: 0}
-  struggleParticles: {fileID: 0}
-  minTime: 1
-  maxTime: 7
-  speed: 12
-  minDistance: 3
-  maxDistance: 9
-  healthValue: 20
+  data: {fileID: 11400000, guid: 1e83ef57b3c065544aef3fc4cbd2973b, type: 2}
   maxHealth: 20
   currentHealth: 20
-  targetPos: {x: 5, y: 1, z: 5}
-  boxSize: {x: 5, y: 1, z: 5}
+  targetPos: {x: 15, y: 1, z: 7}
+  boxSize: {x: 1, y: 1, z: 1}
+  waterArea: {x: 15, y: 1, z: 7}
+  waterOrigin: {fileID: 0}
 --- !u!135 &6892173360821429593
 SphereCollider:
   m_ObjectHideFlags: 0

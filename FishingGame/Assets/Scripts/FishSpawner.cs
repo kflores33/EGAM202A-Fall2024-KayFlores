@@ -59,6 +59,7 @@ public class FishSpawner : MonoBehaviour
             //// give scene references
             fishScript.player = playerStates;
             fishScript.manager = GeneralGameManager;
+            fishScript.waterOrigin = FindObjectOfType<Water>().transform;
 
             // give random scriptable object from list
             int N = fishTypes.Count; // length of list

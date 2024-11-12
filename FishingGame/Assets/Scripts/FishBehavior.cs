@@ -26,6 +26,9 @@ public class FishBehavior : MonoBehaviour
     public Vector3 targetPos;
     public Vector3 boxSize;
 
+    public Vector3 waterArea;
+    public Transform waterOrigin;
+
     Coroutine reInitiateSelfDestruct;
     Coroutine selfDestruct;
     Coroutine moveBehavior;
@@ -45,6 +48,7 @@ public class FishBehavior : MonoBehaviour
         slider.value = currentHealth;
 
         slider.enabled = false;
+        slider.gameObject.SetActive(false);
 
         // start the disappear coroutine
         selfDestruct = StartCoroutine(SelfDestructTimer());
@@ -59,13 +63,14 @@ public class FishBehavior : MonoBehaviour
         {
             if (selfDestruct != null) StopCoroutine(selfDestruct);
 
-            // probably have some coroutine that repeats itself
+            // move behavior controller
             if (moveBehavior == null)
             {
                 slider.enabled = true;
+                slider.gameObject.SetActive(true);
                 moveBehavior = StartCoroutine(MoveBehavior());
             }
-
+            // resets move behavior once completed
             if (moveBehaviorComplete)
             {
                 StopCoroutine(moveBehavior);
@@ -94,51 +99,48 @@ public class FishBehavior : MonoBehaviour
 
         yield return new WaitForSeconds(Random.Range(data.minTime, data.maxTime));
 
-        // attempt to find new location to move to
+        // start position is player position
         Vector3 startPos = transform.position;  
 
-        #region Previous Attempt
-        //int attempts = 100;
+        // defines newPosition variable
+        Vector3 newPosition = Vector3.zero;
 
-        //bool isNotWater = true;
-        //while (isNotWater) 
-        //{
-        //    Vector3 offset = Vector3.zero;
-        //    offset.x = Random.Range(-targetPos.x, targetPos.x);
-        //    offset.y = 0;
-        //    offset.z = Random.Range(-1, 1);
+        int attempts = 100;
 
-        //    newPosition = startPos + offset;
+        bool isNotWater = true;
 
-        //    //Ray ray = new Ray(newPosition, Vector3.zero);
+        while (isNotWater)
+        {
+            Vector3 randomOffset = Vector3.zero;
+            randomOffset.x = Random.Range(-waterArea.x,waterArea.x);
+            randomOffset.y = 0;
+            randomOffset.z = Random.Range(-waterArea.z,waterArea.z);
 
-        //    bool hitDetect = Physics.BoxCast(newPosition, boxSize, Vector3.zero, out RaycastHit hit, Quaternion.identity, 0);
+            newPosition = waterOrigin.position + randomOffset;
 
-        //    if (hitDetect)
-        //    {
-        //        if (hit.collider.GetComponent<Water>() != null)
-        //        {
-        //            isNotWater = false;
-        //        }
-        //        else
-        //        {
-        //            isNotWater = true;
-        //        }
-        //    }
+            // note to self: never try using boxcast for this again LMAO
+            bool hitDetect = Physics.Raycast(newPosition, Vector3.down, out RaycastHit hit);
 
-        //    attempts--;
-        //    if (attempts <= 0) 
-        //    {
-        //        break;
-        //    }
-        //}
-        #endregion
+            if (hitDetect)
+            {
+                Debug.Log("hit detected");
+                if (hit.collider.GetComponent<Water>() != null)
+                {
+                    isNotWater = false;
+                }
+            }
+            else
+            {
+                Debug.Log("no collisions detected dipshit");
+            }
 
-        // get new move direction (goes in the opposite direction of the current position)
-        Vector3 newDir = Vector3.Cross((startPos - player.transform.position).normalized, Vector3.up);
-
-        // (theoretically) moves the fish in the new direction multiplied by a random distance within range
-        Vector3 newPosition = Vector3.zero + (newDir * Random.Range(data.minDistance, data.maxDistance));
+            attempts--;
+            if (attempts <= 0)
+            {
+                Debug.Log("while loop doesnt fucking work lol");
+                break;
+            }
+        }
 
         // lerp between positions (do not remove!!!)
         var t = 0f;
