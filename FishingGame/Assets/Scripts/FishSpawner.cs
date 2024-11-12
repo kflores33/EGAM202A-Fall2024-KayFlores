@@ -20,6 +20,8 @@ public class FishSpawner : MonoBehaviour
 
     Coroutine spawnFishCoroutine;
 
+    public List<FishData> fishTypes = new List<FishData>();
+
     // Start is called before the first frame update
     void Start()
     {
@@ -54,20 +56,15 @@ public class FishSpawner : MonoBehaviour
         FishBehavior fishScript = fish.GetComponent<FishBehavior>();
         if (fishScript != null) 
         {
-            // give player reference
+            //// give scene references
             fishScript.player = playerStates;
-            // give random time values
-            fishScript.minTime = Random.Range(1, 4);
-            fishScript.maxTime = Random.Range(5, 10);
-            // give random distance values
-            fishScript.minDistance = Random.Range(1, 4);
-            fishScript.maxDistance = Random.Range(6, 10);
-
             fishScript.manager = GeneralGameManager;
 
-            fishScript.speed = speed;
+            // give random scriptable object from list
+            int N = fishTypes.Count; // length of list
+            int choice = Random.Range(0, N);
 
-            //fishScript.healthValue = Random.Range(minHealth,maxHealth);
+            fishScript.data = fishTypes[choice];
         }
 
         Debug.Log("spawn fish");

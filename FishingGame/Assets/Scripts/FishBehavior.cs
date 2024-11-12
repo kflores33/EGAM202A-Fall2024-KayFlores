@@ -8,21 +8,16 @@ public class FishBehavior : MonoBehaviour
 {
     //this script handles the instantiated fishs' behavior
 
+    // self references
     public Transform thisTransform;
-    public PlayerStates player;
     public Slider slider;
+
+    // scene references
+    public PlayerStates player;
     public GeneralGameManager manager;
-    public GameObject struggleParticles;
 
-    public float minTime;
-    public float maxTime;
+    public FishData data;
 
-    public float speed;
-
-    public float minDistance;
-    public float maxDistance;
-
-    public float healthValue = 20;
     public float maxHealth;
     public float currentHealth;
 
@@ -40,8 +35,8 @@ public class FishBehavior : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        currentHealth = healthValue;
-        maxHealth = healthValue;
+        currentHealth = data.healthValue;
+        maxHealth = data.healthValue;
         isDead = false;
 
         slider.maxValue = maxHealth;
@@ -51,7 +46,6 @@ public class FishBehavior : MonoBehaviour
 
         slider.enabled = false;
 
-        struggleParticles.SetActive(false);
         // start the disappear coroutine
         selfDestruct = StartCoroutine(SelfDestructTimer());
 
@@ -64,9 +58,6 @@ public class FishBehavior : MonoBehaviour
         if (player.currentState == PlayerStates.PlayerStateMachine.FishingActive)
         {
             if (selfDestruct != null) StopCoroutine(selfDestruct);
-
-            if (!struggleParticles.GetComponent<ParticleSystem>().isPlaying) { struggleParticles.GetComponent<ParticleSystem>().Play(); }
-            if (!struggleParticles.activeInHierarchy) { struggleParticles.SetActive(true); }
 
             // probably have some coroutine that repeats itself
             if (moveBehavior == null)
@@ -101,7 +92,7 @@ public class FishBehavior : MonoBehaviour
     {
         moveBehaviorComplete = false;
 
-        yield return new WaitForSeconds(Random.Range(minTime, maxTime));
+        yield return new WaitForSeconds(Random.Range(data.minTime, data.maxTime));
 
         // attempt to find new location to move to
         Vector3 startPos = transform.position;  
@@ -146,7 +137,7 @@ public class FishBehavior : MonoBehaviour
         var t = 0f;
         while (t < 1)
         {
-            t += Time.deltaTime / speed;
+            t += Time.deltaTime / data.speed;
 
             if (t > 1) { t = 1; }
 
