@@ -19,6 +19,9 @@ public class AuraTriggerDetection : MonoBehaviour
 
     public  List<EnemyHealth> enemies = new List<EnemyHealth>();
 
+
+    // maybe use spherecast instead of trigger (and up knockback!!)
+
     private void OnTriggerEnter(Collider collision)
     {
         if (collision.gameObject.GetComponent<EnemyHealth>() != null)
@@ -47,11 +50,11 @@ public class AuraTriggerDetection : MonoBehaviour
 
             Vector3 direction = ((projectile.transform.position + projectile.transform.forward) - projectile.transform.position).normalized;
 
-            // reflects direction of player's vector3
-            Vector3 reflected = Vector3.Reflect(direction, player.transform.forward);
+            //// reflects direction of player's vector3
+            //Vector3 reflected = Vector3.Reflect(direction, player.transform.forward);
 
             // does the actual reflecting
-            projectile.DeflectProjectile(reflected, this);
+            projectile.DeflectProjectile( this);
 
             // after projectile is reflected,
             if (projectile.hasBeenDeflected)

@@ -92,7 +92,7 @@ public class PlayerActions : MonoBehaviour
     }
 
     // ends parry state and starts cooldown timer
-    void DisableParry()
+    void DisableParry(bool parrySuccess)
     {
         Debug.Log("parry disabled");
         parryAura.gameObject.SetActive(false );
@@ -106,12 +106,20 @@ public class PlayerActions : MonoBehaviour
         // return to default state
         currentState = ActionStates.Default;
 
-        cooldownUI.UseParry();
+
 
         // start cooldown (move to after parry is finished executing)
         if (parryCooldownCoroutine == null)
         {
-            parryCooldownCoroutine = StartCoroutine(ParryCooldownCoroutine());
+            if (!parrySuccess) // if no parry success, start cooldown
+            {
+                cooldownUI.UseParry();
+                parryCooldownCoroutine = StartCoroutine(ParryCooldownCoroutine());
+            }
+            else // if parry successful, reset pary
+            {
+                ResetParry();
+            }
         }
     }
 
@@ -127,17 +135,20 @@ public class PlayerActions : MonoBehaviour
             parryCooldownCoroutine = null;
         }        
     }
-    // clears the aura variables and disables parry upon success
+
+    // clears the aura variables and resets parry upon success
     void ParrySuccess()
     {
         parryAura.hitWhileParry = false;
+
+        // start short coroutine that renders player invincible
 
         if (parryAura.enemies.Count > 0)
         {
             parryAura.enemies.Clear();
         }
 
-        DisableParry();
+        DisableParry(true);
     }
 
     // starts cooldown
@@ -156,7 +167,7 @@ public class PlayerActions : MonoBehaviour
     {
         yield return new WaitForSeconds(parryDuration);
 
-        DisableParry();        
+        DisableParry(false);        
 
         yield break;
     }

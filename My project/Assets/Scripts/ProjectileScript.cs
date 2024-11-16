@@ -23,11 +23,13 @@ public class ProjectileScript : MonoBehaviour
         Destroy(gameObject, life);
     }
 
-    public void DeflectProjectile(Vector3 reflected, AuraTriggerDetection playerAura)
+    public void DeflectProjectile(AuraTriggerDetection playerAura)
     {
         //Debug.Log("fuckin finally deflected omg");
 
-        rb.transform.rotation = Quaternion.LookRotation(reflected);
+        // reference : https://discussions.unity.com/t/find-direction-object-is-moving/708294
+
+        rb.transform.rotation = Quaternion.LookRotation(-Vector3.forward);
 
         rb.AddForce(transform.forward * playerAura.projectileDeflectSpeed, ForceMode.Impulse);
 
