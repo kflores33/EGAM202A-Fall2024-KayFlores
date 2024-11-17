@@ -8,6 +8,8 @@ public class PauseMenu : MonoBehaviour
 
     public KeyCode pauseInput;
 
+    public GameObject pauseMenu;
+
     // Update is called once per frame
     void Update()
     {
@@ -23,10 +25,12 @@ public class PauseMenu : MonoBehaviour
         if (gameIsPaused)
         {
             Time.timeScale = 0;
+            pauseMenu.SetActive(true);
         }
         else
         {
             Time.timeScale = 1;
+            pauseMenu.SetActive(false);
         }
     }
 }
