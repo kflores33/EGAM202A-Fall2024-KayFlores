@@ -61,10 +61,18 @@ public class PlayerActions : MonoBehaviour
     void UpdateDefault()
     {
         // switch to parry state when parry button is pressed (and if cooldown is at 0)
-        if (Input.GetKey(parryKey) && canParry) 
-        {        
-            currentState = ActionStates.Parry;
+        if (!PauseMenu.gameIsPaused)
+        {
+            if (Input.GetKey(parryKey) && canParry) 
+            {        
+                currentState = ActionStates.Parry;
+            }
         }
+        else
+        {
+            // cant do nothing
+        }
+
     }
     void UpdateParry()
     {
