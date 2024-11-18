@@ -21,13 +21,13 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        enemiesLeft = GameObject.FindObjectsOfType<EnemyHealth>().Length;
+        //enemiesLeft = GameObject.FindObjectsOfType<EnemyHealth>().Length;
 
-        if (enemiesLeft == 0)
-        {
-            // win
-            winScreen.SetActive(true);
-        }
+        //if (enemiesLeft == 0)
+        //{
+        //    // win
+        //    winScreen.SetActive(true);
+        //}
         if (playerHealth.currentHealth == 0) 
         { 
             // lose
