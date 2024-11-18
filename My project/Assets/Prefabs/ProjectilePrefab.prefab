@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 7434804870565587642}
   - component: {fileID: 6828714701166160544}
   - component: {fileID: 4144859561028513919}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: ProjectilePrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -158,7 +158,7 @@ SphereCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 136
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -179,6 +179,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   life: 10
+  bulletSpeed: 30
   playerTransform: {fileID: 0}
   rb: {fileID: 7434804870565587642}
   hasBeenDeflected: 0
+  canDamageEnemy: 0
+  useGravity: 0
+  updateTravel: 1
+  useVelocity: 0

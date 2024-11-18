@@ -517,6 +517,8 @@ MonoBehaviour:
   player: {fileID: 0}
   projectileSpeed: 20
   firingSpeed: 2
+  aimBoundsMin: {x: 0, y: 0, z: 0}
+  aimBoundsMax: {x: -180, y: 0, z: 0}
   repeatable: 0
 --- !u!1 &6873927603437807275
 GameObject:

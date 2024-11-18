@@ -29,6 +29,13 @@ public class PlayerMovement : MonoBehaviour
     float verticalInput;
     Quaternion cameraRot;
 
+    public Transform orientation;
+    // shield transform
+    public Transform pivot;
+
+    public Vector3 moveDirection;
+    private Rigidbody rb;
+
     [Header("Keybinds")]
     public KeyCode jumpKey = KeyCode.Space;
 
@@ -36,11 +43,6 @@ public class PlayerMovement : MonoBehaviour
     public float playerHeight;
     public LayerMask whatIsGround;
     public bool grounded;
-
-    public Transform orientation;
-
-    public Vector3 moveDirection;
-    private Rigidbody rb;
 
     // Start is called before the first frame update
     void Start()

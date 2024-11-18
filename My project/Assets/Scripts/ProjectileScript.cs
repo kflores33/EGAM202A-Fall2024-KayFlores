@@ -6,35 +6,42 @@ using UnityEngine;
 public class ProjectileScript : MonoBehaviour
 {
     public float life = 10f;
+    public float bulletSpeed;
 
     public Transform playerTransform;
-
     public Rigidbody rb;
 
     public bool hasBeenDeflected;
-    // could probably change collision layer depending on if true or not using a switch
+
     public bool canDamageEnemy;
+
+    [SerializeField] private bool useGravity, updateTravel, useVelocity;
+
+    // could probably change collision layer depending on if true or not using a switch
 
     // Start is called before the first frame update
     void Awake()
     {
-        rb.useGravity = false;
+        rb.useGravity = useGravity;
         canDamageEnemy = false;
         Destroy(gameObject, life);
+
+        if (!updateTravel) rb.velocity = transform.forward * bulletSpeed;
     }
 
-    public void DeflectProjectile(AuraTriggerDetection playerAura)
+    private void Update()
     {
-        //Debug.Log("fuckin finally deflected omg");
-
-        // reference : https://discussions.unity.com/t/find-direction-object-is-moving/708294
-
-        rb.transform.rotation = Quaternion.LookRotation(-Vector3.forward);
-
-        rb.AddForce(transform.forward * playerAura.projectileDeflectSpeed, ForceMode.Impulse);
-
-        hasBeenDeflected = true;
-        canDamageEnemy = true;
+        if (updateTravel)
+        {
+            if (useVelocity)
+            {
+                rb.velocity = transform.forward * bulletSpeed;
+            }
+            else
+            {
+                transform.position += transform.forward * bulletSpeed * Time.deltaTime;
+            }
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -58,5 +65,10 @@ public class ProjectileScript : MonoBehaviour
                 Destroy(this.gameObject);   
             }
         }
+    }
+
+    public bool IsUpdatingTravel()
+    {
+        return updateTravel;
     }
 }

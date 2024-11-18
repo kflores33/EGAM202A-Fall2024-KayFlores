@@ -178,56 +178,5 @@ public class ProjectileEnemyAi : MonoBehaviour
         Quaternion rotation = Quaternion.LookRotation(lookPos);
         // interpolates between current rotation and the player's position
         transform.rotation = Quaternion.Slerp(transform.rotation, rotation, 0.2f);
-
-        // Other method of clamping (if angle goes past certain point, set rotation back to temp):
-        //      Quaternion yQuaternion = Quaternion.AngleAxis(lookPos.y, -Vector3.right);
-        //      Quaternion temp = this.gameObject.localRotation * yQuaternion;
-        //      if (Quaternion.Angle(center, temp) < this.maxAngle) gameObject.localRotation = temp;
     }
-
-    // clamping angles: https://discussions.unity.com/t/how-do-i-clamp-a-quaternion/606650/6
-    #region angle functions
-
-    // used to clamp rotations using vectors
-    public static Vector3 ClampVector(Vector3 direction, Vector3 center, float maxAngle)
-    {
-        float angle = Vector3.Angle(center, direction);
-        if(angle > maxAngle)
-        {
-            direction.Normalize();
-            center.Normalize();
-            Vector3 rotation = (direction - center) / angle;
-            return (rotation * maxAngle) + center;
-        }
-        return direction;
-    }
-
-    // used to clamp rotations using quaternions (mostly for future reference)
-    public static Quaternion ClampQuaternion(Quaternion q, Vector3 bounds)
-    {
-        q.x /= q.w; q.y /= q.w; q.z /= q.w;
-        q.w = 1.0f;
-
-        float angleX = 2.0f * Mathf.Rad2Deg * Mathf.Atan(q.x);
-        angleX = Mathf.Clamp(angleX, -bounds.x, bounds.x);
-        q.x = Mathf.Tan(0.5f * Mathf.Deg2Rad * angleX);
-
-        float angleY = 2.0f * Mathf.Rad2Deg * Mathf.Atan(q.y);
-        angleY = Mathf.Clamp(angleY, -bounds.y, bounds.y);
-        q.y = Mathf.Tan(0.5f * Mathf.Deg2Rad * angleY);
-
-        float angleZ = 2.0f * Mathf.Rad2Deg * Mathf.Atan(q.z);
-        angleZ = Mathf.Clamp(angleZ, -bounds.z, bounds.z);
-        q.z = Mathf.Tan(0.5f * Mathf.Deg2Rad * angleZ);
-
-        return q.normalized;
-
-        // How to use:
-        //      Vector3 bounds = new Vector3(x, y, z); // ie: x axis will have a range of -x to x
-        //          var dif = transform.position - target.position; // difference between positions of target and this object
-        //          targetRot = Quaternion.LookRotation(dif);
-        //      targetRot = ClampQuaternion(targetRot, bounds); // <---this part is the important one!!!!
-        //      transform.rotation = Quaternion.Lerp(transform.rotation, targetRot, time.deltaTime * 0.75f);
-    }
-    #endregion
 }
