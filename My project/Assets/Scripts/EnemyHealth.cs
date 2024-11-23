@@ -42,7 +42,9 @@ public class EnemyHealth : MonoBehaviour
 
         if (currentHealth > 0)
         {
-            OnHitWithReference?.Invoke(sender);
+
+                OnHitWithReference?.Invoke(sender);
+
         }
         else
         {

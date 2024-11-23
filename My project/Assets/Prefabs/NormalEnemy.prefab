@@ -244,7 +244,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 4405562953013443884}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.1
+  m_Radius: 0.26
   m_Speed: 30
   m_Acceleration: 8
   avoidancePriority: 50
@@ -348,7 +348,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 3501680841075870076}
-  knockbackStrength: 35
+  knockbackStrength: 90
   delay: 0.3
   OnBegin:
     m_PersistentCalls:
@@ -424,10 +424,10 @@ MonoBehaviour:
       - m_Target: {fileID: 922812979366979973}
         m_TargetAssemblyTypeName: KnockbackFeedback, Assembly-CSharp
         m_MethodName: PlayFeedback
-        m_Mode: 2
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
