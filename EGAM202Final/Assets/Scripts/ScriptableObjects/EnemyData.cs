@@ -11,5 +11,8 @@ public class EnemyData : ScriptableObject
     public float yellowThresholdMax; // if below this number, enemy is in yellow light state
     public float redThresholdMax; // if below this number, enemy is in red light state
 
+    [Header("Misc Variables")]
     public float moveSpeed;
+
+    public string enemyName;
 }
