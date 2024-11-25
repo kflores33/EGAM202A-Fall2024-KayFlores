@@ -2807,11 +2807,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boneShape: 1
-  drawBones: 1
+  drawBones: 0
   drawTripods: 0
-  boneSize: 0.54
+  boneSize: 0.56
   tripodSize: 1
-  boneColor: {r: 1, g: 0, b: 0.78430605, a: 0.17254902}
+  boneColor: {r: 1, g: 0, b: 0.78430605, a: 0.23137255}
   m_Transforms:
   - {fileID: 1071874851}
   - {fileID: 1410732575}
