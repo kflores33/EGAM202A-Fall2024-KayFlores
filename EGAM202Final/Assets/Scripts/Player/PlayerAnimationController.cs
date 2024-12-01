@@ -9,6 +9,7 @@ public class PlayerAnimationController : MonoBehaviour
 
     public PlayerMovement moveScript;
     public Animator animator;
+    public MParentWeapon MParentWeapon;
 
     public Transform playerTransform;
 
@@ -63,6 +64,24 @@ public class PlayerAnimationController : MonoBehaviour
             blendX = 0.0f;
     }
 
+    void LightAttackTest()
+    {
+        int attackLayer = animator.GetLayerIndex("Attack");
+
+        MParentWeapon.HandR();
+        animator.SetLayerWeight(attackLayer, 1);
+
+        animator.SetTrigger("LightAttack");
+    }
+
+    public void EndAttackState()
+    {
+        int attackLayer = animator.GetLayerIndex("Attack");
+
+        MParentWeapon.Back();
+        animator.SetLayerWeight(attackLayer, 0);
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -78,5 +97,10 @@ public class PlayerAnimationController : MonoBehaviour
 
         animator.SetFloat(BlendXHash, blendX);
         animator.SetFloat(BlendZHash, blendZ);
+
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            LightAttackTest();
+        }
     }
 }
