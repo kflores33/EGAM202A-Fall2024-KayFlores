@@ -18,6 +18,9 @@ public class PlayerAnimationController : MonoBehaviour
     public float acceleration = 0.5f;
     public float deceleration = 0.5f;
 
+    public KeyCode _attackKey = KeyCode.Mouse0;
+    public KeyCode _jumpKey = KeyCode.Space;
+
     // increase performance
     int BlendZHash;
     int BlendXHash;
@@ -78,5 +81,14 @@ public class PlayerAnimationController : MonoBehaviour
 
         animator.SetFloat(BlendXHash, blendX);
         animator.SetFloat(BlendZHash, blendZ);
+
+        if (Input.GetKeyDown(_jumpKey))
+        {
+            animator.SetTrigger("jump");
+        }
+        if (Input.GetKeyDown(_attackKey))
+        {
+            animator.SetTrigger("lightAttack");
+        }
     }
 }

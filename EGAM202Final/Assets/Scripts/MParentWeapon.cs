@@ -10,8 +10,10 @@ public class MParentWeapon : MonoBehaviour
     private enum Mode
     {
         Idle,
-        Hand,
-        Back
+        Back,
+        HandL,
+        HandR,
+        HandB
     }
 
     private Mode m_Mode;
@@ -23,8 +25,10 @@ public class MParentWeapon : MonoBehaviour
             var constraint = mParentCon.GetComponent<MultiParentConstraint>();
             var sourceObjects = constraint.data.sourceObjects;
 
-            sourceObjects.SetWeight(0, m_Mode == Mode.Hand ? 1f : 0f);
-            sourceObjects.SetWeight(1, m_Mode == Mode.Back ? 1f : 0f);
+            sourceObjects.SetWeight(0, m_Mode == Mode.Back ? 1f : 0f);
+            sourceObjects.SetWeight(1, m_Mode == Mode.HandL ? 1f : 0f);
+            sourceObjects.SetWeight(2, m_Mode == Mode.HandR ? 1f : 0f);
+            sourceObjects.SetWeight(3, m_Mode == Mode.HandB ? 1f : 0f);
             constraint.data.sourceObjects = sourceObjects;
 
             m_Mode = Mode.Idle;
@@ -33,17 +37,27 @@ public class MParentWeapon : MonoBehaviour
 
     public void Start()
     {
-        hand();
+        back();
     }
-    public void hand()
-    {
-        m_Mode = Mode.Hand;
-        Debug.Log("hand");
-    }
-
     public void back()
     {
         m_Mode = Mode.Back;
         Debug.Log("back");
+    }
+
+    public void handL()
+    {
+        m_Mode = Mode.HandL;
+        Debug.Log("Left hand");
+    }
+    public void handR()
+    {
+        m_Mode = Mode.HandR;
+        Debug.Log("Right hand");
+    }
+    public void handB()
+    {
+        m_Mode = Mode.HandB;
+        Debug.Log("dual wielding");
     }
 }
