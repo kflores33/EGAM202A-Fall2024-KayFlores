@@ -1,21 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class CombatHandler : MonoBehaviour
 {
-    public List<AttackData> combo1;
+    public List<AttackData> combo1; // get rid of this once you implement the uhhh expanded combo system
 
     public List<ComboList> comboList;
 
     float lastClickedTime;
     float lastComboEnd;
-    int comboCounter;
+    public int comboCounter;
 
     [SerializeField] KeyCode lightAttack = KeyCode.Mouse0;
 
     Animator anim;
+
     [SerializeField] AttackHandler attackHandler;
+
+    public UnityEvent OnAttack, OnAttackEnd;
 
     // Start is called before the first frame update
     void Start()
@@ -40,7 +44,7 @@ public class CombatHandler : MonoBehaviour
         {
             CancelInvoke("EndCombo");
 
-            if (Time.time - lastClickedTime >= 0.2f)
+            if (Time.time - lastClickedTime >= 0.4f)
             {
                 // takes attack from combo list (corresponding to current attack)
                 anim.runtimeAnimatorController = combo1[comboCounter].animatorOV;
@@ -56,18 +60,28 @@ public class CombatHandler : MonoBehaviour
                 }
             }
         }
+
+        OnAttack?.Invoke();
     }
 
     void ExitAttack()
     {
-        if(anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.9f && anim.GetCurrentAnimatorStateInfo(0).IsTag("Attack"))
+        if(anim.GetCurrentAnimatorStateInfo(anim.GetLayerIndex("Attack")).normalizedTime > 0.9f && anim.GetCurrentAnimatorStateInfo(anim.GetLayerIndex("Attack")).IsTag("Attack"))
         {
+            OnAttackEnd?.Invoke();
+
             Invoke("EndCombo", 1);
+
+            Debug.Log("end combo invoked");
         }
     }
 
     void EndCombo()
     {
+        OnAttackEnd?.Invoke();
+
+        Debug.Log("combo ended");
+
         comboCounter = 0;
         lastComboEnd = Time.time;
     }

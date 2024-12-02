@@ -46,6 +46,7 @@ public class PlayerMovement : MonoBehaviour
     bool canMove = true;
 
     Vector3 targetRotateDirection;
+    Quaternion lastRotation;
 
     // Start is called before the first frame update
     void Start()
@@ -124,15 +125,41 @@ public class PlayerMovement : MonoBehaviour
     private void RotateCharacter()
     {
         if (!canRotate) { return; }
+        else
 
-        Quaternion newRotation = Quaternion.LookRotation(moveDirection);
-        Quaternion targetRotation = Quaternion.Slerp(transform.rotation, newRotation, rotationSpeed * Time.deltaTime);
-        transform.rotation = targetRotation;
+        targetRotateDirection = moveDirection;
+        targetRotateDirection.Normalize();
+
+        if (targetRotateDirection.x != -1)
+        {
+            Quaternion newRotation = Quaternion.LookRotation(targetRotateDirection);
+            //Quaternion targetRotation = Quaternion.Slerp(transform.rotation, newRotation, rotationSpeed * Time.deltaTime);
+
+            // if there is any vertical/horizontal input, log the rotation of the character
+            if (verticalInput != 0 || horizontalInput != 0)
+            {
+                //lastRotation = Quaternion.Lerp(transform.rotation, newRotation, rotationSpeed * Time.deltaTime);
+                lastRotation = newRotation;
+
+                // only change rotation when character moves forward
+                if (verticalInput == 1)
+                {
+                    transform.rotation = newRotation;
+                }
+            }
+            // no input, then rotate the player towards the last rotation
+            else
+            {
+                // have player face the direction of last input
+                transform.rotation = lastRotation;
+            }
+        }
     }
 
     private void MovePlayer()
     {
         if (!canMove) { return; }
+        else
 
         // gets move direction
         CameraInfluence();
@@ -200,6 +227,17 @@ public class PlayerMovement : MonoBehaviour
         ResetJump();
 
         yield break;
+    }
+
+    public void DisableMovement()
+    {
+        canMove = false;
+        canRotate = false;
+    }
+    public void EnableMovement()
+    {
+        canMove = true;
+        canRotate = true;
     }
 
     private void OnCollisionEnter(Collision collision)
