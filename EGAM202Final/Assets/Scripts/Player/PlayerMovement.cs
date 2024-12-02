@@ -2,6 +2,7 @@ using Cinemachine.Examples;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -40,6 +41,11 @@ public class PlayerMovement : MonoBehaviour
     public float playerHeight;
     public LayerMask whatIsGround;
     public bool grounded;
+
+    bool canRotate = true;
+    bool canMove = true;
+
+    Vector3 targetRotateDirection;
 
     // Start is called before the first frame update
     void Start()
@@ -103,21 +109,49 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    private void CameraInfluence()
+    {
+        // relative to world space
+        Vector3 camForward = Camera.main.transform.forward;
+        Vector3 camRight = Camera.main.transform.right;
+
+        moveDirection = camForward * verticalInput;
+        moveDirection += camRight * horizontalInput;
+        moveDirection.Normalize();
+        moveDirection.y = 0;
+    }
+
+    private void RotateCharacter()
+    {
+        if (!canRotate) { return; }
+
+        Quaternion newRotation = Quaternion.LookRotation(moveDirection);
+        Quaternion targetRotation = Quaternion.Slerp(transform.rotation, newRotation, rotationSpeed * Time.deltaTime);
+        transform.rotation = targetRotation;
+    }
+
     private void MovePlayer()
     {
+        if (!canMove) { return; }
+
+        // gets move direction
+        CameraInfluence();
+
         // calculate movement direction (makes movement follow camera direction)
-        moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
+        //moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
 
         // actually move the player (while on ground)
         if (grounded)
         {
-            rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
+            rb.AddForce(moveDirection * moveSpeed * 10f, ForceMode.Force);
         }
         // in air
         else if (!grounded)
         {
-            rb.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
+            rb.AddForce(moveDirection * moveSpeed * 10f * airMultiplier, ForceMode.Force);
         }
+
+        RotateCharacter();
     }
 
     // limits player speed

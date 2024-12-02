@@ -86,9 +86,9 @@ public class PlayerAnimationController : MonoBehaviour
         {
             animator.SetTrigger("jump");
         }
-        if (Input.GetKeyDown(_attackKey))
-        {
-            animator.SetTrigger("lightAttack");
-        }
+        //if (Input.GetKeyDown(_attackKey))
+        //{
+        //    animator.SetTrigger("lightAttack");
+        //}
     }
 }
