@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7ab8f2d6f8927644fb19b997f3ef5b69, type: 3}
-  m_Name: Attack.Light1
+  m_Name: Attack.Light2
   m_EditorClassIdentifier: 
-  animatorOV: {fileID: 22100000, guid: b4d7d65d4390e734381bf8d661b217cb, type: 2}
+  animatorOV: {fileID: 22100000, guid: 0f5cf28023616b448aca8d11055c86ff, type: 2}
   damage: 5
-  knockbackStrength: 1
+  knockbackStrength: 2

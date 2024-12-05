@@ -13,6 +13,8 @@ public class CombatHandler : MonoBehaviour
     float lastComboEnd;
     public int comboCounter;
 
+    public float endComboTime;
+
     [SerializeField] KeyCode lightAttack = KeyCode.Mouse0;
 
     Animator anim;
@@ -43,9 +45,10 @@ public class CombatHandler : MonoBehaviour
 
     void Attack()
     {
-        if (Time.time - lastComboEnd > 0.5f && comboCounter < combo1.Count)
+        if (Time.time - lastComboEnd > 0.25f && comboCounter < combo1.Count)
         {
             CancelInvoke("EndCombo");
+            OnAttack?.Invoke();
 
             if (Time.time - lastClickedTime >= 0.4f)
             {
@@ -64,7 +67,7 @@ public class CombatHandler : MonoBehaviour
             }
         }
 
-        OnAttack?.Invoke();
+        //OnAttack?.Invoke();
     }
 
     void ExitAttack()
@@ -73,7 +76,7 @@ public class CombatHandler : MonoBehaviour
         {
             OnAttackEnd?.Invoke();
 
-            Invoke("EndCombo", 1);
+            Invoke("EndCombo", endComboTime);
 
             Debug.Log("end combo invoked");
         }
@@ -81,7 +84,7 @@ public class CombatHandler : MonoBehaviour
 
     void EndCombo()
     {
-        OnAttackEnd?.Invoke();
+        //OnAttackEnd?.Invoke();
 
         Debug.Log("combo ended");
 
