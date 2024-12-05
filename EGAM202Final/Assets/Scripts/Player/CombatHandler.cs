@@ -16,6 +16,7 @@ public class CombatHandler : MonoBehaviour
     [SerializeField] KeyCode lightAttack = KeyCode.Mouse0;
 
     Animator anim;
+    int attackLayer;
 
     [SerializeField] AttackHandler attackHandler;
 
@@ -25,6 +26,8 @@ public class CombatHandler : MonoBehaviour
     void Start()
     {
         anim = GetComponentInChildren<Animator>();
+
+        attackLayer = anim.GetLayerIndex("Attack");
     }
 
     // Update is called once per frame
@@ -48,7 +51,7 @@ public class CombatHandler : MonoBehaviour
             {
                 // takes attack from combo list (corresponding to current attack)
                 anim.runtimeAnimatorController = combo1[comboCounter].animatorOV;
-                anim.Play("Attack", anim.GetLayerIndex("Attack"), 0);
+                anim.Play("Attack", attackLayer, 0);
                 //attackHandler.damage = combo1[comboCounter].damage;
 
                 comboCounter++;
@@ -66,7 +69,7 @@ public class CombatHandler : MonoBehaviour
 
     void ExitAttack()
     {
-        if(anim.GetCurrentAnimatorStateInfo(anim.GetLayerIndex("Attack")).normalizedTime > 0.9f && anim.GetCurrentAnimatorStateInfo(anim.GetLayerIndex("Attack")).IsTag("Attack"))
+        if(anim.GetCurrentAnimatorStateInfo(attackLayer).normalizedTime > 0.9f && anim.GetCurrentAnimatorStateInfo(attackLayer).IsTag("Attack"))
         {
             OnAttackEnd?.Invoke();
 

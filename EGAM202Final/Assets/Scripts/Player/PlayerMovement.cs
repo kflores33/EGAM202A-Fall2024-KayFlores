@@ -1,4 +1,5 @@
 using Cinemachine.Examples;
+using Cinemachine.Utility;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -122,6 +123,43 @@ public class PlayerMovement : MonoBehaviour
         moveDirection.y = 0;
     }
 
+    private void RotateCharacterLockOn()
+    {
+        if (!canRotate) { return; }
+        else
+
+        targetRotateDirection = moveDirection;
+        targetRotateDirection.Normalize();
+
+        if (targetRotateDirection.x != -1)
+        {
+            Quaternion newRotation = Quaternion.LookRotation(targetRotateDirection);
+            Quaternion targetRotation = Quaternion.Slerp(transform.rotation, newRotation, rotationSpeed * Time.deltaTime);
+
+            // if there is any vertical/horizontal input, log the rotation of the character
+            if (verticalInput != 0 || horizontalInput != 0)
+            {
+                //lastRotation = Quaternion.Lerp(transform.rotation, newRotation, rotationSpeed * Time.deltaTime);
+                lastRotation = targetRotation;
+
+                // only change rotation when character moves forward
+                if (verticalInput == 1)
+                {
+                    transform.rotation = targetRotation;
+                }
+                // change rotation when character moves left and right
+
+                // need to make it so that the camera dictates the forward direction of the character to a degree
+            }
+            // no input, then rotate the player towards the last rotation
+            else
+            {
+                // have player face the direction of last input
+                transform.rotation = lastRotation;
+            }
+        }
+    }
+
     private void RotateCharacter()
     {
         if (!canRotate) { return; }
@@ -133,19 +171,15 @@ public class PlayerMovement : MonoBehaviour
         if (targetRotateDirection.x != -1)
         {
             Quaternion newRotation = Quaternion.LookRotation(targetRotateDirection);
-            //Quaternion targetRotation = Quaternion.Slerp(transform.rotation, newRotation, rotationSpeed * Time.deltaTime);
+            Quaternion targetRotation = Quaternion.Slerp(transform.rotation, newRotation, rotationSpeed * Time.deltaTime);
 
             // if there is any vertical/horizontal input, log the rotation of the character
             if (verticalInput != 0 || horizontalInput != 0)
             {
-                //lastRotation = Quaternion.Lerp(transform.rotation, newRotation, rotationSpeed * Time.deltaTime);
-                lastRotation = newRotation;
+                lastRotation = targetRotation;
+                transform.rotation = targetRotation;
 
-                // only change rotation when character moves forward
-                if (verticalInput == 1)
-                {
-                    transform.rotation = newRotation;
-                }
+                TiltWhileRun();
             }
             // no input, then rotate the player towards the last rotation
             else
@@ -154,6 +188,11 @@ public class PlayerMovement : MonoBehaviour
                 transform.rotation = lastRotation;
             }
         }
+    }
+
+    private void TiltWhileRun()
+    {
+
     }
 
     private void MovePlayer()

@@ -1,6 +1,7 @@
 using Cinemachine.Examples;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
 public class PlayerAnimationController : MonoBehaviour
@@ -20,6 +21,8 @@ public class PlayerAnimationController : MonoBehaviour
 
     public KeyCode _attackKey = KeyCode.Mouse0;
     public KeyCode _jumpKey = KeyCode.Space;
+
+    public List<KeyCode> _moveKeysGeneric = new List<KeyCode>() { KeyCode.W, KeyCode.A, KeyCode.S, KeyCode.D };
 
     // increase performance
     int BlendZHash;
@@ -66,29 +69,56 @@ public class PlayerAnimationController : MonoBehaviour
             blendX = 0.0f;
     }
 
-    // Update is called once per frame
-    void Update()
+    void ChangeVelocity1D(bool moveButtonPressed)
+    {
+        if (moveButtonPressed && blendZ < 1f) blendZ += Time.deltaTime * acceleration;
+
+        if (!moveButtonPressed && blendZ > 0.0f) blendZ -= Time.deltaTime * deceleration;
+    }
+
+    public static bool GetAnyMoveKeyDown(List<KeyCode> keys)
+    {
+        for (int i = 0; i < keys.Count; i++)
+        {
+            if (Input.GetKey(keys[i]))
+            {
+                Debug.Log("key has been pressed");
+                return true;
+            }
+        }
+        return false;
+    }
+
+    void DefaultMovement()
+    {
+        bool moveKeyPressed = GetAnyMoveKeyDown(_moveKeysGeneric);
+
+        ChangeVelocity1D(moveKeyPressed);
+
+        animator.SetFloat(BlendZHash, blendZ);
+    }
+
+    void LockOnMovement()
     {
         bool forwardPressed = Input.GetKey(KeyCode.W);
         bool backPressed = Input.GetKey(KeyCode.S);
         bool leftPressed = Input.GetKey(KeyCode.A);
         bool rightPressed = Input.GetKey(KeyCode.D);
-        bool spacePressed = Input.GetKey(KeyCode.Space);
-
-        bool jumpPressed = Input.GetKey(KeyCode.Space);
 
         changeVelocity(forwardPressed, backPressed, leftPressed, rightPressed);
 
         animator.SetFloat(BlendXHash, blendX);
         animator.SetFloat(BlendZHash, blendZ);
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        DefaultMovement();
 
         if (Input.GetKeyDown(_jumpKey))
         {
             animator.SetTrigger("jump");
         }
-        //if (Input.GetKeyDown(_attackKey))
-        //{
-        //    animator.SetTrigger("lightAttack");
-        //}
     }
 }

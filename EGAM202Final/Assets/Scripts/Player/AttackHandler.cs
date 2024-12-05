@@ -17,6 +17,8 @@ public class AttackHandler : MonoBehaviour
 
     private Coroutine stopKnockback;
 
+    public float waitToEnable = 0.2f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -33,12 +35,6 @@ public class AttackHandler : MonoBehaviour
         var smackableObj = other.gameObject.GetComponent<Knockback>();
         if (smackableObj != null)
         {
-            //if(stopKnockback != null)
-            //{
-            //    StopCoroutine(stopKnockback);
-            //    stopKnockback = null;
-            //}
-
             OnKB?.Invoke();
             smackableObj.rb.isKinematic = false;
 
@@ -47,31 +43,22 @@ public class AttackHandler : MonoBehaviour
 
             // add knockback based on attack data
             smackableObj.rb.AddForce(dir * combatHandler.combo1[combatHandler.comboCounter].knockbackStrength, ForceMode.Impulse);
-
-            //if (stopKnockback == null)
-            //{
-            //    stopKnockback = StartCoroutine(StopKnockback(smackableObj.rb));
-            //}
         }
     }
 
-    //IEnumerator StopKnockback(Rigidbody smackableObj)
-    //{
-    //    yield return new WaitForSeconds(0.75f);
-
-    //    smackableObj.velocity = Vector3.zero;
-    //    smackableObj.isKinematic = true;
-
-    //    OnKBEnd?.Invoke();
-    //}
-
     public void EnableTriggerBox()
     {
+        StartCoroutine(WaitToExecute());
         triggerBox.enabled = true;
+        StopCoroutine(WaitToExecute());
     }
     public void DisableTriggerBox()
     {
         triggerBox.enabled = false;
     }
-    // write separate functions for different attack strings, basically check if the previous attacks make a certain move possible to execute ig
+
+    public IEnumerator WaitToExecute()
+    {
+        yield return new WaitForSeconds(waitToEnable);
+    }
 }

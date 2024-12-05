@@ -25,7 +25,11 @@ public class Knockback : MonoBehaviour
     {
         if (collision.gameObject.GetComponent<Ground>() != null)
         {
-            rb.isKinematic = true;
+            Invoke("SetKinematic", 0.25f);
+        }
+        else
+        {
+            CancelInvoke("SetKinematic");
         }
         if (collision.gameObject.GetComponent<Wall>() != null)
         {
@@ -33,5 +37,10 @@ public class Knockback : MonoBehaviour
 
             rb.AddForce(dir * knockbackStrengthWall, ForceMode.Impulse);
         }
+    }
+
+    void SetKinematic()
+    {
+        rb.isKinematic = true;
     }
 }
