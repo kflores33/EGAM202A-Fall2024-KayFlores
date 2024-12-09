@@ -46,7 +46,7 @@ public class PlayerMovement : MonoBehaviour
     bool canRotate = true;
     bool canMove = true;
 
-    Vector3 targetRotateDirection;
+    public Vector3 targetRotateDirection;
     Quaternion lastRotation;
 
     // Start is called before the first frame update

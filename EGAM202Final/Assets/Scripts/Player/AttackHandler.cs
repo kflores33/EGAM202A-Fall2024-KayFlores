@@ -15,8 +15,6 @@ public class AttackHandler : MonoBehaviour
 
     public UnityEvent OnKB, OnKBEnd;
 
-    private Coroutine stopKnockback;
-
     public float waitToEnable = 0.2f;
 
     // Start is called before the first frame update
@@ -48,17 +46,10 @@ public class AttackHandler : MonoBehaviour
 
     public void EnableTriggerBox()
     {
-        StartCoroutine(WaitToExecute());
         triggerBox.enabled = true;
-        StopCoroutine(WaitToExecute());
     }
     public void DisableTriggerBox()
     {
         triggerBox.enabled = false;
-    }
-
-    public IEnumerator WaitToExecute()
-    {
-        yield return new WaitForSeconds(waitToEnable);
     }
 }

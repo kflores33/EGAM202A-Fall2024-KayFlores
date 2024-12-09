@@ -13,6 +13,8 @@ public class CombatHandler : MonoBehaviour
     float lastComboEnd;
     public int comboCounter;
 
+    bool canEndCombo;
+
     public float endComboTime;
 
     [SerializeField] KeyCode lightAttack = KeyCode.Mouse0;
@@ -20,14 +22,20 @@ public class CombatHandler : MonoBehaviour
     Animator anim;
     int attackLayer;
 
+    PlayerMovement playerMovement;
+
     [SerializeField] AttackHandler attackHandler;
 
     public UnityEvent OnAttack, OnAttackEnd;
+
+    Rigidbody rb;
 
     // Start is called before the first frame update
     void Start()
     {
         anim = GetComponentInChildren<Animator>();
+        rb = GetComponent<Rigidbody>();
+        playerMovement = GetComponent<PlayerMovement>();
 
         attackLayer = anim.GetLayerIndex("Attack");
     }
@@ -37,21 +45,31 @@ public class CombatHandler : MonoBehaviour
     {
         if (Input.GetKeyDown(lightAttack))
         {
+            //if ((anim.GetCurrentAnimatorStateInfo(attackLayer).IsTag("Attack")))
+            //{
+            //    Debug.Log("reset collider");
+            //    OnAttackEnd?.Invoke();
+            //}
             Attack();
+            OnAttack?.Invoke();
         }
 
-        ExitAttack();
+        //ExitAttack();
     }
 
     void Attack()
     {
-        if (Time.time - lastComboEnd > 0.25f && comboCounter < combo1.Count)
+        //Debug.Log("attack clicked");
+        if (Time.time - lastComboEnd > 0.1f && comboCounter < combo1.Count)
         {
+            //Debug.Log("ATTACK EXECUTED");
             CancelInvoke("EndCombo");
-            OnAttack?.Invoke();
+            //OnAttack?.Invoke();
+            
 
-            if (Time.time - lastClickedTime >= 0.4f)
+            if (Time.time - lastClickedTime >= 0.2f)
             {
+                Debug.Log("ANIMATION EXECUTED");
                 // takes attack from combo list (corresponding to current attack)
                 anim.runtimeAnimatorController = combo1[comboCounter].animatorOV;
                 anim.Play("Attack", attackLayer, 0);
@@ -60,6 +78,8 @@ public class CombatHandler : MonoBehaviour
                 comboCounter++;
                 lastClickedTime = Time.time;
 
+                rb.AddForce(playerMovement.targetRotateDirection * 10, ForceMode.Impulse);
+
                 if(comboCounter >= combo1.Count)
                 {
                     comboCounter = 0;
@@ -67,19 +87,23 @@ public class CombatHandler : MonoBehaviour
             }
         }
 
-        //OnAttack?.Invoke();
+        canEndCombo = true;
     }
 
     void ExitAttack()
     {
-        if(anim.GetCurrentAnimatorStateInfo(attackLayer).normalizedTime > 0.9f && anim.GetCurrentAnimatorStateInfo(attackLayer).IsTag("Attack"))
-        {
+        //if(anim.GetCurrentAnimatorStateInfo(attackLayer).normalizedTime > 0.9f && anim.GetCurrentAnimatorStateInfo(attackLayer).IsTag("Attack"))
+        //{
             OnAttackEnd?.Invoke();
 
-            Invoke("EndCombo", endComboTime);
+            if (canEndCombo)
+            {
+                Invoke("EndCombo", endComboTime);
+                canEndCombo = false;
 
-            Debug.Log("end combo invoked");
-        }
+                Debug.Log("end combo invoked");
+            }
+        //}
     }
 
     void EndCombo()

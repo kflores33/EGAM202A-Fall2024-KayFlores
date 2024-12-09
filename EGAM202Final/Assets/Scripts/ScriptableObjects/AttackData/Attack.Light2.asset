@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Attack.Light2
   m_EditorClassIdentifier: 
   animatorOV: {fileID: 22100000, guid: 0f5cf28023616b448aca8d11055c86ff, type: 2}
-  damage: 5
-  knockbackStrength: 2
+  damage: 8
+  knockbackStrength: 1

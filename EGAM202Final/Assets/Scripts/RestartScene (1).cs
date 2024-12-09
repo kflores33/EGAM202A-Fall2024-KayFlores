@@ -6,10 +6,12 @@ using UnityEngine.SceneManagement;
 
 public class RestartScene : MonoBehaviour
 {
+    public string sceneName;
+
     // Start is called before the first frame update
     void restartGame()
     {
-        SceneManager.LoadScene("SampleScene");
+        SceneManager.LoadScene(sceneName);
     }
 
     // Update is called once per frame
