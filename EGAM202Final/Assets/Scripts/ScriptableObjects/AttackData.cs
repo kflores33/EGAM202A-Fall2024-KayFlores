@@ -7,7 +7,7 @@ public class AttackData : ScriptableObject
 {
     public AnimatorOverrideController animatorOV;
 
-    public float damage;
+    public int damage;
 
     public float knockbackStrength;
 }

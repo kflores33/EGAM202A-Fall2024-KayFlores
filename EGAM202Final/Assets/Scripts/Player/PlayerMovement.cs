@@ -2,6 +2,7 @@ using Cinemachine.Examples;
 using Cinemachine.Utility;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -46,8 +47,14 @@ public class PlayerMovement : MonoBehaviour
     bool canRotate = true;
     bool canMove = true;
 
-    public Vector3 targetRotateDirection;
+    Vector3 targetRotateDirection;
     Quaternion lastRotation;
+
+    [HideInInspector]public Vector3 camPos;
+
+    PlayerMovement character;
+
+    public float groundCheckRadius;
 
     // Start is called before the first frame update
     void Start()
@@ -56,6 +63,7 @@ public class PlayerMovement : MonoBehaviour
         rb.freezeRotation = true;
 
         readyToJump = true;
+        character = GetComponent<PlayerMovement>();
     }
 
     // Update is called once per frame
@@ -65,6 +73,15 @@ public class PlayerMovement : MonoBehaviour
         MyInput();
         // controls speed
         SpeedControl();
+
+        if (CheckIfGrounded(transform.position, groundCheckRadius, whatIsGround))
+        {
+            grounded = true;
+        }
+        else
+        {
+            grounded = false;
+        }
 
         // handle drag
         if (grounded)
@@ -116,6 +133,10 @@ public class PlayerMovement : MonoBehaviour
         // relative to world space
         Vector3 camForward = Camera.main.transform.forward;
         Vector3 camRight = Camera.main.transform.right;
+
+        camPos = camForward + camRight;
+        camPos.Normalize();
+        camPos.y = 0f;
 
         moveDirection = camForward * verticalInput;
         moveDirection += camRight * horizontalInput;
@@ -279,18 +300,28 @@ public class PlayerMovement : MonoBehaviour
         canRotate = true;
     }
 
-    private void OnCollisionEnter(Collision collision)
+    static bool CheckIfGrounded(Vector3 playerPos, float rad, LayerMask groundLayer)
     {
-        if (collision.gameObject.GetComponent<Ground>() != null)
-        {
-            grounded = true;
-        }
+        return (Physics.CheckSphere(playerPos, rad, groundLayer));
     }
-    private void OnCollisionExit(Collision collision)
+
+    private void OnDrawGizmosSelected()
     {
-        if (collision.gameObject.GetComponent<Ground>() != null)
-        {
-            grounded = false;
-        }
+        Gizmos.DrawSphere(transform.position, groundCheckRadius);
     }
+
+    //private void OnCollisionEnter(Collision collision)
+    //{
+    //    if (collision.gameObject.GetComponent<Ground>() != null)
+    //    {
+    //        grounded = true;
+    //    }
+    //}
+    //private void OnCollisionExit(Collision collision)
+    //{
+    //    if (collision.gameObject.GetComponent<Ground>() != null)
+    //    {
+    //        grounded = false;
+    //    }
+    //}
 }

@@ -12,6 +12,7 @@ public class AttackHandler : MonoBehaviour
     public BoxCollider triggerBox;
 
     CombatHandler combatHandler;
+    GameObject playerObject;
 
     public UnityEvent OnKB, OnKBEnd;
 
@@ -21,6 +22,8 @@ public class AttackHandler : MonoBehaviour
     void Start()
     {
         combatHandler = GetComponent<CombatHandler>();
+        playerObject = this.GetComponent<GameObject>();
+
         DisableTriggerBox();
     }
 
@@ -34,13 +37,19 @@ public class AttackHandler : MonoBehaviour
         if (smackableObj != null)
         {
             OnKB?.Invoke();
-            smackableObj.rb.isKinematic = false;
+            smackableObj.OnKnockback();
 
             // calculate direction of enemy in relation to the player
             Vector3 dir = (smackableObj.transform.position - transform.position).normalized;
 
             // add knockback based on attack data
             smackableObj.rb.AddForce(dir * combatHandler.combo1[combatHandler.comboCounter].knockbackStrength, ForceMode.Impulse);
+        }
+
+        var enemyHit = other.gameObject.GetComponent<EnemyHealth>();
+        if(enemyHit != null)
+        {
+            enemyHit.GetHit(gameObject);
         }
     }
 

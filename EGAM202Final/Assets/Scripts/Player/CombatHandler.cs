@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -8,6 +9,8 @@ public class CombatHandler : MonoBehaviour
     public List<AttackData> combo1; // get rid of this once you implement the uhhh expanded combo system
 
     public List<ComboList> comboList;
+
+    public AttackData currentAttack;
 
     float lastClickedTime;
     float lastComboEnd;
@@ -45,16 +48,14 @@ public class CombatHandler : MonoBehaviour
     {
         if (Input.GetKeyDown(lightAttack))
         {
-            //if ((anim.GetCurrentAnimatorStateInfo(attackLayer).IsTag("Attack")))
-            //{
-            //    Debug.Log("reset collider");
-            //    OnAttackEnd?.Invoke();
-            //}
             Attack();
             OnAttack?.Invoke();
-        }
 
-        //ExitAttack();
+            if (!playerMovement.grounded)
+            {
+                rb.isKinematic = true;
+            }
+        }
     }
 
     void Attack()
@@ -72,13 +73,15 @@ public class CombatHandler : MonoBehaviour
                 Debug.Log("ANIMATION EXECUTED");
                 // takes attack from combo list (corresponding to current attack)
                 anim.runtimeAnimatorController = combo1[comboCounter].animatorOV;
+                currentAttack = combo1[comboCounter];
+
                 anim.Play("Attack", attackLayer, 0);
                 //attackHandler.damage = combo1[comboCounter].damage;
 
                 comboCounter++;
                 lastClickedTime = Time.time;
 
-                rb.AddForce(playerMovement.targetRotateDirection * 10, ForceMode.Impulse);
+                rb.AddForce(transform.forward * 25, ForceMode.Impulse);
 
                 if(comboCounter >= combo1.Count)
                 {
@@ -95,6 +98,7 @@ public class CombatHandler : MonoBehaviour
         //if(anim.GetCurrentAnimatorStateInfo(attackLayer).normalizedTime > 0.9f && anim.GetCurrentAnimatorStateInfo(attackLayer).IsTag("Attack"))
         //{
             OnAttackEnd?.Invoke();
+            rb.isKinematic = false;
 
             if (canEndCombo)
             {
@@ -115,4 +119,6 @@ public class CombatHandler : MonoBehaviour
         comboCounter = 0;
         lastComboEnd = Time.time;
     }
+
+
 }

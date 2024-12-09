@@ -8,11 +8,17 @@ public class Knockback : MonoBehaviour
     public Rigidbody rb;
     public float knockbackStrengthWall;
 
+    public bool isTouchingGround;
+    public bool isTouchingWall;
+
+    public Coroutine kinematicSetter;
+
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         rb.isKinematic = true;
+        isTouchingGround = true;
     }
 
     // Update is called once per frame
@@ -21,22 +27,76 @@ public class Knockback : MonoBehaviour
 
     }
 
-    private void OnCollisionEnter(Collision collision)
+    public void OnKnockback()
     {
-        if (collision.gameObject.GetComponent<Ground>() != null)
+        isTouchingGround = false;
+
+        // starts timer to turn iskinematic on and off
+        if (kinematicSetter == null)
         {
-            Invoke("SetKinematic", 0.25f);
+            kinematicSetter = StartCoroutine(KinematicSetter());
         }
         else
         {
-            CancelInvoke("SetKinematic");
+            StopCoroutine(kinematicSetter);
+            kinematicSetter = null;
+
+            kinematicSetter = StartCoroutine(KinematicSetter());
         }
-        if (collision.gameObject.GetComponent<Wall>() != null)
+
+        // if touches wall, bounce off it
+        if (isTouchingGround && rb.isKinematic == false)
         {
             Vector3 dir = transform.position.normalized * -1;
 
             rb.AddForce(dir * knockbackStrengthWall, ForceMode.Impulse);
         }
+
+        // once iskinematic is true, stop the associated coroutine
+        if (rb.isKinematic == true)
+        {
+            StopCoroutine(kinematicSetter);
+            kinematicSetter = null;
+        }
+    }
+
+    public IEnumerator KinematicSetter()
+    {
+        rb.isKinematic = false;
+
+        // wait to check if grounded
+        yield return new WaitForSeconds(0.25f);
+
+        if (isTouchingGround)
+        {
+            SetKinematic();
+        }
+    }
+    static bool CheckIfGrounded(Vector3 enemyPos, float rad, LayerMask groundLayer)
+    {
+        return (Physics.CheckSphere(enemyPos, rad, groundLayer));
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.GetComponent<Ground>() != null)
+        {
+            //Invoke("SetKinematic", 0.25f);
+            isTouchingGround = true;
+        }
+        else
+        {
+            //CancelInvoke("SetKinematic");
+            isTouchingGround=false;
+        }
+
+        //if (collision.gameObject.GetComponent<Wall>() != null)
+        //{
+
+
+        //    isTouchingWall = true;
+        //}
+        //else isTouchingWall=false;
     }
 
     void SetKinematic()

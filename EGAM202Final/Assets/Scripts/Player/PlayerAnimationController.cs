@@ -116,7 +116,7 @@ public class PlayerAnimationController : MonoBehaviour
     {
         DefaultMovement();
 
-        if (Input.GetKeyDown(_jumpKey) && moveScript.canJump == true)
+        if (Input.GetKeyDown(_jumpKey) && moveScript.grounded == true)
         {
             animator.SetTrigger("jump");
         }

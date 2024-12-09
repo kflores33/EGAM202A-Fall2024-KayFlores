@@ -6,13 +6,13 @@ using UnityEngine;
 public class EnemyData : ScriptableObject
 {
     [Header("Health Thresholds")]
-    public float maxHealth;
+    public int maxHealth;
 
-    public float yellowThresholdMax; // if below this number, enemy is in yellow light state
-    public float redThresholdMax; // if below this number, enemy is in red light state
+    public int yellowThresholdMax; // if below this number, enemy is in yellow light state
+    public int redThresholdMax; // if below this number, enemy is in red light state
 
     [Header("Misc Variables")]
-    public float moveSpeed;
+    public int moveSpeed;
 
     public string enemyName;
 }
